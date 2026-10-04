@@ -58,7 +58,7 @@ const de: typeof en = {
     friSat: 'Nur Fr. & Sa.',
   },
   home: {
-    lockup: 'Meze & Café-Bar · Seit 1907',
+    lockup: 'Meze & Café-Bar · Seit 1907',
     title: 'Traditionelles griechisches Meze-Restaurant in Kalathos, Rhodos',
     h1: 'Traditionelles griechisches Meze-Restaurant in Kalathos, Rhodos',
     subtitle: 'Familienrezepte, lokale Zutaten und traditionelle rhodische Aromen — zum Teilen serviert.',

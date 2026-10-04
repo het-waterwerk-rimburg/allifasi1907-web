@@ -232,14 +232,18 @@ const signature = [42, 39, 54, 43, 56, 17];
     white-space: nowrap;
   }
 
+  /* Narrow screens: the line may wrap, so the rules move to full-width
+     hairlines above and below instead of hanging on one side. */
   @media (max-width: 599px) {
     .hero__lockup {
+      padding-block: 8px;
+      border-block: 1px solid color-mix(in srgb, var(--gold) 70%, transparent);
       font-size: 0.8125rem;
       letter-spacing: 0.14em;
       white-space: normal;
     }
 
-    .hero__lockup-rule:last-child {
+    .hero__lockup-rule {
       display: none;
     }
   }
@@ -255,7 +259,8 @@ const signature = [42, 39, 54, 43, 56, 17];
     flex: 0 0 40px;
   }
 
-  :global(:lang(el)) .hero__title {
+  :global(:lang(el)) .hero__title,
+  :global(:lang(de)) .hero__title {
     font-size: clamp(1.875rem, 1.3rem + 2.2vw, 3.125rem);
   }
 

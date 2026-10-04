@@ -1,0 +1,486 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-04T08:23:10.728Z",
+  "title": "Design System: Alli Fasi 1907",
+  "extensions": {
+    "colorMeta": {
+      "aegean-teal": {
+        "role": "primary",
+        "displayName": "Aegean Teal",
+        "canonical": "#0e3b43",
+        "tonalRamp": [
+          "oklch(15% 0.049 211.9)",
+          "oklch(25% 0.049 211.9)",
+          "oklch(35% 0.049 211.9)",
+          "oklch(45% 0.049 211.9)",
+          "oklch(55% 0.049 211.9)",
+          "oklch(65% 0.049 211.9)",
+          "oklch(80% 0.025 211.9)",
+          "oklch(95% 0.025 211.9)"
+        ]
+      },
+      "teal-deep": {
+        "role": "primary",
+        "displayName": "Deep Tin",
+        "canonical": "#0a2c32",
+        "tonalRamp": [
+          "oklch(15% 0.040 211.5)",
+          "oklch(25% 0.040 211.5)",
+          "oklch(35% 0.040 211.5)",
+          "oklch(45% 0.040 211.5)",
+          "oklch(55% 0.040 211.5)",
+          "oklch(65% 0.040 211.5)",
+          "oklch(80% 0.020 211.5)",
+          "oklch(95% 0.020 211.5)"
+        ]
+      },
+      "teal-line": {
+        "role": "primary",
+        "displayName": "Tin Hairline",
+        "canonical": "#2a5a63",
+        "tonalRamp": [
+          "oklch(15% 0.054 211.4)",
+          "oklch(25% 0.054 211.4)",
+          "oklch(35% 0.054 211.4)",
+          "oklch(45% 0.054 211.4)",
+          "oklch(55% 0.054 211.4)",
+          "oklch(65% 0.054 211.4)",
+          "oklch(80% 0.027 211.4)",
+          "oklch(95% 0.027 211.4)"
+        ]
+      },
+      "ancient-gold": {
+        "role": "secondary",
+        "displayName": "Ancient Gold",
+        "canonical": "#c09a58",
+        "tonalRamp": [
+          "oklch(15% 0.096 80.0)",
+          "oklch(25% 0.096 80.0)",
+          "oklch(35% 0.096 80.0)",
+          "oklch(45% 0.096 80.0)",
+          "oklch(55% 0.096 80.0)",
+          "oklch(65% 0.096 80.0)",
+          "oklch(80% 0.048 80.0)",
+          "oklch(95% 0.048 80.0)"
+        ]
+      },
+      "gold-ink": {
+        "role": "secondary",
+        "displayName": "Gold Ink",
+        "canonical": "#7a5c25",
+        "tonalRamp": [
+          "oklch(15% 0.082 79.9)",
+          "oklch(25% 0.082 79.9)",
+          "oklch(35% 0.082 79.9)",
+          "oklch(45% 0.082 79.9)",
+          "oklch(55% 0.082 79.9)",
+          "oklch(65% 0.082 79.9)",
+          "oklch(80% 0.041 79.9)",
+          "oklch(95% 0.041 79.9)"
+        ]
+      },
+      "olive": {
+        "role": "tertiary",
+        "displayName": "Olive Tab",
+        "canonical": "#6b705c",
+        "tonalRamp": [
+          "oklch(15% 0.031 118.9)",
+          "oklch(25% 0.031 118.9)",
+          "oklch(35% 0.031 118.9)",
+          "oklch(45% 0.031 118.9)",
+          "oklch(55% 0.031 118.9)",
+          "oklch(65% 0.031 118.9)",
+          "oklch(80% 0.015 118.9)",
+          "oklch(95% 0.015 118.9)"
+        ]
+      },
+      "olive-dark": {
+        "role": "tertiary",
+        "displayName": "Dark Olive",
+        "canonical": "#4a503d",
+        "tonalRamp": [
+          "oklch(15% 0.031 122.0)",
+          "oklch(25% 0.031 122.0)",
+          "oklch(35% 0.031 122.0)",
+          "oklch(45% 0.031 122.0)",
+          "oklch(55% 0.031 122.0)",
+          "oklch(65% 0.031 122.0)",
+          "oklch(80% 0.016 122.0)",
+          "oklch(95% 0.016 122.0)"
+        ]
+      },
+      "brick": {
+        "role": "tertiary",
+        "displayName": "Brick",
+        "canonical": "#8a3b24",
+        "tonalRamp": [
+          "oklch(15% 0.114 36.9)",
+          "oklch(25% 0.114 36.9)",
+          "oklch(35% 0.114 36.9)",
+          "oklch(45% 0.114 36.9)",
+          "oklch(55% 0.114 36.9)",
+          "oklch(65% 0.114 36.9)",
+          "oklch(80% 0.057 36.9)",
+          "oklch(95% 0.057 36.9)"
+        ]
+      },
+      "soft-cream": {
+        "role": "neutral",
+        "displayName": "Soft Cream",
+        "canonical": "#fafaed",
+        "tonalRamp": [
+          "oklch(15% 0.017 106.7)",
+          "oklch(25% 0.017 106.7)",
+          "oklch(35% 0.017 106.7)",
+          "oklch(45% 0.017 106.7)",
+          "oklch(55% 0.017 106.7)",
+          "oklch(65% 0.017 106.7)",
+          "oklch(80% 0.009 106.7)",
+          "oklch(95% 0.009 106.7)"
+        ]
+      },
+      "cream-deep": {
+        "role": "neutral",
+        "displayName": "Deep Cream",
+        "canonical": "#f1eedb",
+        "tonalRamp": [
+          "oklch(15% 0.025 99.5)",
+          "oklch(25% 0.025 99.5)",
+          "oklch(35% 0.025 99.5)",
+          "oklch(45% 0.025 99.5)",
+          "oklch(55% 0.025 99.5)",
+          "oklch(65% 0.025 99.5)",
+          "oklch(80% 0.013 99.5)",
+          "oklch(95% 0.013 99.5)"
+        ]
+      },
+      "warm-beige": {
+        "role": "neutral",
+        "displayName": "Warm Beige",
+        "canonical": "#d8c3a5",
+        "tonalRamp": [
+          "oklch(15% 0.047 76.8)",
+          "oklch(25% 0.047 76.8)",
+          "oklch(35% 0.047 76.8)",
+          "oklch(45% 0.047 76.8)",
+          "oklch(55% 0.047 76.8)",
+          "oklch(65% 0.047 76.8)",
+          "oklch(80% 0.023 76.8)",
+          "oklch(95% 0.023 76.8)"
+        ]
+      },
+      "deep-charcoal": {
+        "role": "neutral",
+        "displayName": "Deep Charcoal",
+        "canonical": "#1c2426",
+        "tonalRamp": [
+          "oklch(15% 0.012 214.6)",
+          "oklch(25% 0.012 214.6)",
+          "oklch(35% 0.012 214.6)",
+          "oklch(45% 0.012 214.6)",
+          "oklch(55% 0.012 214.6)",
+          "oklch(65% 0.012 214.6)",
+          "oklch(80% 0.006 214.6)",
+          "oklch(95% 0.006 214.6)"
+        ]
+      },
+      "muted-slate": {
+        "role": "neutral",
+        "displayName": "Muted Slate",
+        "canonical": "#5a6b70",
+        "tonalRamp": [
+          "oklch(15% 0.022 217.4)",
+          "oklch(25% 0.022 217.4)",
+          "oklch(35% 0.022 217.4)",
+          "oklch(45% 0.022 217.4)",
+          "oklch(55% 0.022 217.4)",
+          "oklch(65% 0.022 217.4)",
+          "oklch(80% 0.011 217.4)",
+          "oklch(95% 0.011 217.4)"
+        ]
+      },
+      "on-tin-muted": {
+        "role": "neutral",
+        "displayName": "Tin Mist",
+        "canonical": "#c9d3cf",
+        "tonalRamp": [
+          "oklch(15% 0.012 170.2)",
+          "oklch(25% 0.012 170.2)",
+          "oklch(35% 0.012 170.2)",
+          "oklch(45% 0.012 170.2)",
+          "oklch(55% 0.012 170.2)",
+          "oklch(65% 0.012 170.2)",
+          "oklch(80% 0.006 170.2)",
+          "oklch(95% 0.006 170.2)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "H1 on hero and page heroes; Cinzel capitals (GFS Didot capitals for Greek)."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "H2 section titles and menu category heads."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "H3 and dish names."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Running copy held to 50-62ch."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Hero and page-hero subtitles."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Uppercase nav, category tabs, counts, footer column titles."
+      },
+      "small": {
+        "displayName": "Small",
+        "purpose": "Field labels, notes, error text."
+      }
+    },
+    "shadows": [
+      {
+        "name": "seal-drop",
+        "value": "filter: drop-shadow(0 10px 18px rgb(5 25 29 / 0.45))",
+        "purpose": "The stamped seal lifting off the hero frame."
+      },
+      {
+        "name": "dropdown",
+        "value": "0 12px 30px -12px rgb(10 44 50 / 0.45)",
+        "purpose": "Language menu sheet."
+      },
+      {
+        "name": "sticky-edge",
+        "value": "0 8px 16px -14px rgb(10 44 50 / 0.5)",
+        "purpose": "Sticky menu category bar."
+      },
+      {
+        "name": "button-keyline",
+        "value": "inset 0 0 0 3px <fill>, inset 0 0 0 4px color-mix(in srgb, #c09a58 55%, transparent)",
+        "purpose": "Inner second keyline on olive and gold tabs; a printed rule, not depth."
+      },
+      {
+        "name": "focus-halo",
+        "value": "0 0 0 3px color-mix(in srgb, #c09a58 45%, transparent)",
+        "purpose": "Form field focus."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "All reveals and state transitions."
+      },
+      {
+        "name": "dur-fast",
+        "value": "180ms",
+        "purpose": "Link colour, chip and field state."
+      },
+      {
+        "name": "dur",
+        "value": "320ms",
+        "purpose": "Button fill, nav underline, arrow slide."
+      },
+      {
+        "name": "dur-reveal",
+        "value": "800ms",
+        "purpose": "Section-entry fade + 18px rise, staggered 90ms, played once from a visible default."
+      },
+      {
+        "name": "hero-print",
+        "value": "ink-gold 700ms; inner rule +300ms; photo-in 1100ms +450ms; seal-stamp 700ms +1150ms",
+        "purpose": "Signature: the hero label prints and the seal stamps once; static under reduced motion."
+      },
+      {
+        "name": "drawer-in",
+        "value": "380ms, translateX(-24px) + fade",
+        "purpose": "Mobile drawer opening."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "form-2col / hero-lockup-rules",
+        "value": "600px"
+      },
+      {
+        "name": "footer-2col",
+        "value": "720px"
+      },
+      {
+        "name": "pillars-3col",
+        "value": "900px"
+      },
+      {
+        "name": "two-column-bands",
+        "value": "960px"
+      },
+      {
+        "name": "footer-4col",
+        "value": "1080px"
+      },
+      {
+        "name": "full-header-nav",
+        "value": "1120px"
+      },
+      {
+        "name": "form-3col",
+        "value": "1200px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button (Olive Tab)",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The booking action: olive tab with a gold keyline and an inset second keyline.",
+      "html": "<a class=\"ds-btn ds-btn-primary\" href=\"#\">Reserve a table</a>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:48px;padding:.75rem 1.5rem;border:1px solid var(--btn-line);border-radius:2px;background:var(--btn-bg);color:var(--btn-fg);font-family:'Plus Jakarta Sans',sans-serif;font-size:.9375rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;line-height:1.2;cursor:pointer;transition:background-color 320ms cubic-bezier(0.16,1,0.3,1),color 320ms cubic-bezier(0.16,1,0.3,1),transform 180ms ease;}.ds-btn:active{transform:translateY(1px);}.ds-btn:focus-visible{outline:2px solid #c09a58;outline-offset:3px;}.ds-btn-primary{--btn-bg:#6b705c;--btn-fg:#fafaed;--btn-line:#c09a58;box-shadow:inset 0 0 0 3px var(--btn-bg),inset 0 0 0 4px color-mix(in srgb,#c09a58 55%,transparent);}.ds-btn-primary:hover{--btn-bg:#4a503d;}"
+    },
+    {
+      "name": "Line Button on Tin",
+      "kind": "button",
+      "refersTo": "button-line-on-tin",
+      "description": "Secondary action on teal: gold outline, cream label.",
+      "html": "<div style=\"background:#0e3b43;padding:24px\"><a class=\"ds-btn ds-btn-line\" href=\"#\">View menu</a></div>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:48px;padding:.75rem 1.5rem;border:1px solid var(--btn-line);border-radius:2px;background:var(--btn-bg);color:var(--btn-fg);font-family:'Plus Jakarta Sans',sans-serif;font-size:.9375rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;line-height:1.2;cursor:pointer;transition:background-color 320ms cubic-bezier(0.16,1,0.3,1),color 320ms cubic-bezier(0.16,1,0.3,1),transform 180ms ease;}.ds-btn:active{transform:translateY(1px);}.ds-btn:focus-visible{outline:2px solid #c09a58;outline-offset:3px;}.ds-btn-line{--btn-bg:transparent;--btn-fg:#fafaed;--btn-line:#c09a58;}.ds-btn-line:hover{--btn-bg:color-mix(in srgb,#c09a58 16%,transparent);}"
+    },
+    {
+      "name": "Line Button on Paper",
+      "kind": "button",
+      "refersTo": "button-line-on-paper",
+      "description": "Secondary action on cream: teal outline that fills teal on hover.",
+      "html": "<a class=\"ds-btn ds-btn-paper\" href=\"#\">Google</a>",
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:.6em;min-height:48px;padding:.75rem 1.5rem;border:1px solid var(--btn-line);border-radius:2px;background:var(--btn-bg);color:var(--btn-fg);font-family:'Plus Jakarta Sans',sans-serif;font-size:.9375rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;line-height:1.2;cursor:pointer;transition:background-color 320ms cubic-bezier(0.16,1,0.3,1),color 320ms cubic-bezier(0.16,1,0.3,1),transform 180ms ease;}.ds-btn:active{transform:translateY(1px);}.ds-btn:focus-visible{outline:2px solid #c09a58;outline-offset:3px;}.ds-btn-paper{--btn-bg:transparent;--btn-fg:#0e3b43;--btn-line:#0e3b43;}.ds-btn-paper:hover{--btn-bg:#0e3b43;--btn-fg:#fafaed;}.ds-btn-paper:focus-visible{outline-color:#0e3b43;}"
+    },
+    {
+      "name": "Filter Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Square 2px menu filter; pressed fills teal.",
+      "html": "<button class=\"ds-chip\" aria-pressed=\"false\">Vegetarian</button> <button class=\"ds-chip\" aria-pressed=\"true\">Vegan</button>",
+      "css": ".ds-chip{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border:1px solid color-mix(in srgb,#0e3b43 35%,transparent);border-radius:2px;background:#fafaed;color:#0e3b43;font:600 .875rem 'Plus Jakarta Sans',sans-serif;cursor:pointer;transition:background-color 180ms ease,color 180ms ease,border-color 180ms ease;}.ds-chip:hover{border-color:#0e3b43;}.ds-chip[aria-pressed='true']{background:#0e3b43;border-color:#0e3b43;color:#fafaed;}.ds-chip:focus-visible{outline:2px solid #0e3b43;outline-offset:3px;}"
+    },
+    {
+      "name": "Badge",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Square outline badge in Gold Ink (chef/family), Dark Olive (diet) or Brick (spicy).",
+      "html": "<span class=\"ds-badge\">Chef's pick</span> <span class=\"ds-badge ds-badge-diet\">Vegan</span> <span class=\"ds-badge ds-badge-spicy\">Spicy</span>",
+      "css": ".ds-badge{display:inline-flex;align-items:center;gap:.35em;padding:.2em .6em;border:1px solid currentColor;border-radius:2px;font:600 .75rem/1.4 'Plus Jakarta Sans',sans-serif;letter-spacing:.04em;white-space:nowrap;color:#7a5c25;}.ds-badge-diet{color:#4a503d;}.ds-badge-spicy{color:#8a3b24;}"
+    },
+    {
+      "name": "Booking Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Cream field with teal hairline; teal border and gold halo on focus; themed select chevron.",
+      "html": "<label class=\"ds-field\"><span>Guests</span><select><option>2</option><option>4</option></select></label>",
+      "css": ".ds-field{display:flex;flex-direction:column;gap:6px;max-width:280px;font-family:'Plus Jakarta Sans',sans-serif;}.ds-field span{font-size:.875rem;font-weight:600;color:#0e3b43;}.ds-field select{appearance:none;width:100%;min-height:48px;padding:10px 40px 10px 12px;border:1px solid color-mix(in srgb,#0e3b43 30%,transparent);border-radius:2px;background:#fafaed url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230e3b43' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6.5 9.5 5.5 5.5 5.5-5.5'/%3E%3C/svg%3E\") no-repeat right 12px center/18px;color:#1c2426;font-size:1rem;transition:border-color 180ms ease,box-shadow 180ms ease;}.ds-field select:focus{outline:none;border-color:#0e3b43;box-shadow:0 0 0 3px color-mix(in srgb,#c09a58 45%,transparent);}"
+    },
+    {
+      "name": "Header Navigation",
+      "kind": "nav",
+      "refersTo": "",
+      "description": "Teal tin header: Cinzel brand lockup, uppercase nav with a gold underline drawn from the left on hover/current.",
+      "html": "<nav class=\"ds-nav\"><span class=\"ds-nav-brand\">Alli Fasi<small>Rodos · 1907</small></span><a href=\"#\" aria-current=\"page\">Menu</a><a href=\"#\">Our story</a><a href=\"#\">Restaurant</a></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;gap:4px;height:72px;padding:0 24px;background:#0e3b43;border-bottom:1px solid #2a5a63;font-family:'Plus Jakarta Sans',sans-serif;}.ds-nav-brand{display:flex;flex-direction:column;margin-right:auto;font:600 1.3rem/1 Cinzel,serif;letter-spacing:.08em;color:#fafaed;}.ds-nav-brand small{margin-top:4px;font:600 .6875rem 'Plus Jakarta Sans',sans-serif;letter-spacing:.2em;text-transform:uppercase;color:#c09a58;}.ds-nav a{position:relative;display:inline-flex;align-items:center;min-height:44px;padding:0 12px;font-size:.8125rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:#c9d3cf;}.ds-nav a::after{content:'';position:absolute;left:12px;right:12px;bottom:8px;height:1px;background:#c09a58;transform:scaleX(0);transform-origin:left;transition:transform 320ms cubic-bezier(0.16,1,0.3,1);}.ds-nav a:hover,.ds-nav a[aria-current='page']{color:#fafaed;}.ds-nav a:hover::after,.ds-nav a[aria-current='page']::after{transform:scaleX(1);}.ds-nav a:focus-visible{outline:2px solid #c09a58;outline-offset:3px;}"
+    },
+    {
+      "name": "Gold Double-Rule Frame",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Label window: nested octagons (1px gold, 4px ground, 1px gold, 4px ground, picture), 18px cut.",
+      "html": "<div class=\"ds-frame\"><div class=\"ds-g\"><div class=\"ds-r\"><div class=\"ds-g ds-g2\"><div class=\"ds-pic\"></div></div></div></div></div>",
+      "css": ".ds-frame,.ds-g,.ds-r,.ds-pic{clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c));}.ds-frame{--c:18px;width:280px;aspect-ratio:4/3;padding:1px;background:#c09a58;}.ds-g{--c:calc(18px - 0.41px);height:100%;padding:4px;background:#fafaed;}.ds-r{--c:calc(18px - 2.07px);height:100%;padding:1px;background:#c09a58;}.ds-g2{--c:calc(18px - 2.48px);}.ds-pic{--c:calc(18px - 4.14px);height:100%;background:#0e3b43;}"
+    },
+    {
+      "name": "Label Panel",
+      "kind": "card",
+      "refersTo": "label-panel",
+      "description": "Cream paper with 24px octagon cut and an inner gold hairline octagon 8px in.",
+      "html": "<div style=\"background:#0e3b43;padding:24px\"><div class=\"ds-panel\"><h3>Since 1907</h3><p>A family table in Kalathos.</p></div></div>",
+      "css": ".ds-panel,.ds-panel::before,.ds-panel::after{clip-path:polygon(var(--c) 0,calc(100% - var(--c)) 0,100% var(--c),100% calc(100% - var(--c)),calc(100% - var(--c)) 100%,var(--c) 100%,0 calc(100% - var(--c)),0 var(--c));}.ds-panel{--c:24px;position:relative;isolation:isolate;max-width:360px;padding:2.25rem;background:#fafaed;color:#1c2426;font-family:'Plus Jakarta Sans',sans-serif;}.ds-panel::before,.ds-panel::after{content:'';position:absolute;z-index:-1;pointer-events:none;}.ds-panel::before{--c:calc(24px - 3.31px);inset:8px;background:#c09a58;}.ds-panel::after{--c:calc(24px - 3.73px);inset:9px;background:#fafaed;}.ds-panel h3{margin:0 0 .5em;font:600 1.5rem/1.15 Cinzel,serif;color:#0e3b43;}.ds-panel p{margin:0;}"
+    },
+    {
+      "name": "Price Row",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Dish name, dotted gold leader, tabular teal price, slate description.",
+      "html": "<div class=\"ds-dish\"><div class=\"ds-row\"><span class=\"ds-name\">Pitaroudia</span><span class=\"ds-price\">€8.50</span></div><p>Rhodian chickpea fritters.</p></div>",
+      "css": ".ds-dish{max-width:420px;padding:20px 0;border-bottom:1px solid color-mix(in srgb,#c09a58 45%,transparent);font-family:'Plus Jakarta Sans',sans-serif;}.ds-row{display:grid;grid-template-columns:1fr auto;column-gap:12px;align-items:baseline;}.ds-name{display:flex;align-items:baseline;gap:10px;font:600 1.25rem/1.3 Cinzel,serif;color:#1c2426;}.ds-name::after{content:'';flex:1;min-width:24px;border-bottom:1px dotted color-mix(in srgb,#c09a58 80%,transparent);transform:translateY(-4px);}.ds-price{font-weight:600;font-variant-numeric:tabular-nums lining-nums;color:#0e3b43;}.ds-dish p{margin:6px 0 0;font-size:.9375rem;color:#5a6b70;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Olive Oil Tin Label",
+    "overview": "The site is lithographed, not photographed-and-overlaid. Every surface is either a solid Aegean-teal tin field or a sheet of cream label paper, and the two alternate down the page the way a printed tin wraps its label. On those fields sit the label's printed furniture: ancient-gold double rules with cut octagonal corners, Greek meander bands as borders, an oval gold 1907 seal, and dotted price leaders. Photographs only ever appear inside gold-framed label windows.\n\nDensity is calm and generous: long section padding, one idea per band, copy held to a reading measure. The display voice is Cinzel set in capitals (GFS Didot, uppercased, for Greek); the working voice is Plus Jakarta Sans (Commissioner for Greek). Colour is flat and solid. There is no glass, no gradient, no emoji. The site refuses the category default of a full-bleed food photo under a dark overlay with a centred script headline.\n\nMotion is printing, not performance: the hero label prints once (outer gold rule, inner rule, photo) and the seal stamps once; everything else rises in with a short fade on section entry. Under reduced motion it is all static.",
+    "keyCharacteristics": [
+      "Solid teal tin fields alternating with cream label paper; never a gradient between them.",
+      "Gold double-rule octagon frames around every photograph.",
+      "Meander bands as printed borders at the edges of tin fields.",
+      "The oval 1907 seal as the one stamped mark per view.",
+      "Cinzel capitals for display; Plus Jakarta Sans for everything you read or press.",
+      "Square-shouldered tabs (2px) for buttons, chips, badges and fields."
+    ],
+    "rules": [
+      {
+        "name": "The Two Fields Rule",
+        "body": "Every band is either solid teal tin or solid cream paper (or their deep variants). No photo backgrounds, no overlays, no gradients.",
+        "section": "colors"
+      },
+      {
+        "name": "The Gold Is Ink Rule",
+        "body": "Ancient Gold draws rules, borders, ornaments and marks. When gold must carry small text on cream, use Gold Ink instead.",
+        "section": "colors"
+      },
+      {
+        "name": "The Olive Means Book Rule",
+        "body": "Olive fills are reserved for the booking action and its echoes; nothing decorative is olive.",
+        "section": "colors"
+      },
+      {
+        "name": "The Greek Capitals Rule",
+        "body": "Under `lang=\"el\"`, display headings and drawer links are set in GFS Didot capitals with 0.035em tracking, letting the browser drop the tonos accents as Greek typesetting requires.",
+        "section": "typography"
+      },
+      {
+        "name": "The Display-Is-Display Rule",
+        "body": "Cinzel sets headings, the brand name, the seal and the hero lockup line only. Paragraphs, prices, buttons and form text are always the body face.",
+        "section": "typography"
+      },
+      {
+        "name": "The Printed Depth Rule",
+        "body": "Panels, frames and cards never take a shadow; they are printed on the field. Shadows belong only to things that float (seal, dropdown, sticky bar).",
+        "section": "elevation"
+      },
+      {
+        "name": "The Parallel Diagonals Rule",
+        "body": "A nested octagon's cut is the outer cut minus inset x 0.414; never eyeball it, or the double rule pinches at the corners.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do alternate solid teal tin and cream paper bands; use the deep variants to separate two neighbouring bands of the same field.",
+      "Do put every photograph in the gold double-rule octagon frame, with its gap matching the band behind it.",
+      "Do set prices with a dotted gold leader and tabular lining numerals in teal.",
+      "Do use Gold Ink, not Ancient Gold, for any small text on cream.",
+      "Do keep buttons, chips, badges and fields as square 2px tabs with a 44 to 48px target.",
+      "Do set Greek display headings in GFS Didot capitals.",
+      "Do keep motion to the one reveal grammar and the single hero print, and make both static under reduced motion."
+    ],
+    "donts": [
+      "Don't use a full-bleed photo with a dark overlay and a centred script headline.",
+      "Don't use glass, backdrop blur, gradients or emoji.",
+      "Don't round the frames or panels; large forms take octagonal cuts, never radii.",
+      "Don't give printed panels or frames a shadow; shadows are for floating things only.",
+      "Don't fill decorative elements with olive; olive means booking.",
+      "Don't set paragraphs, prices or form text in Cinzel."
+    ]
+  }
+}

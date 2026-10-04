@@ -58,7 +58,7 @@ const fr: typeof en = {
     friSat: 'Ven. & sam. uniquement',
   },
   home: {
-    lockup: 'Mezzés & café-bar · Depuis 1907',
+    lockup: 'Mezzés & café-bar · Depuis 1907',
     title: 'Restaurant de mezzés grecs traditionnels à Kalathos, Rhodes',
     h1: 'Restaurant de mezzés grecs traditionnels à Kalathos, Rhodes',
     subtitle: 'Recettes de famille, produits locaux et saveurs rhodiennes traditionnelles — servis pour être partagés.',

@@ -56,7 +56,7 @@ const en = {
     friSat: 'Fri & Sat only',
   },
   home: {
-    lockup: 'Meze & Cafe Bar · Since 1907',
+    lockup: 'Meze & Cafe Bar · Since 1907',
     title: 'Traditional Greek Meze Restaurant in Kalathos, Rhodes',
     h1: 'Traditional Greek Meze Restaurant in Kalathos, Rhodes',
     subtitle: 'Family recipes, local ingredients and traditional Rhodian flavours — served to share.',
