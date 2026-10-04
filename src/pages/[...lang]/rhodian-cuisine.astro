@@ -1,0 +1,132 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Frame from '../../components/Frame.astro';
+import Icon from '../../components/Icon.astro';
+import DishLabel from '../../components/DishLabel.astro';
+import ReserveBand from '../../components/ReserveBand.astro';
+import { href, langPaths, t, type Lang } from '../../i18n/config';
+import mezeTable from '../../assets/photos/meze-table.avif';
+import grilledBread from '../../assets/photos/grilled-bread.avif';
+
+export const getStaticPaths = langPaths;
+
+const { lang } = Astro.props as { lang: Lang };
+const s = t(lang);
+const p = s.cuisinePage;
+---
+
+<Base lang={lang} page="cuisine" title={p.title} description={p.subtitle}>
+  <PageHero title={p.h1} subtitle={p.subtitle} />
+
+  <section class="section paper">
+    <div class="container cuisine">
+      <div class="cuisine__text">
+        {
+          p.sections.map((sec, i) => (
+            <article class="cuisine__block" data-reveal>
+              <h2>{sec.title}</h2>
+              <p class="measure">{sec.text}</p>
+              {i === 1 && (
+                <Frame class="cuisine__inline">
+                  <Image src={grilledBread} alt={s.home.photoAlt.bread} widths={[480, 720, 856]} sizes="(min-width: 960px) 50vw, 92vw" />
+                </Frame>
+              )}
+            </article>
+          ))
+        }
+      </div>
+      <aside class="cuisine__aside">
+        <Frame class="cuisine__frame" data-reveal>
+          <Image src={mezeTable} alt={s.home.photoAlt.table} widths={[480, 720, 893]} sizes="(min-width: 960px) 36vw, 92vw" />
+        </Frame>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section paper paper--deep" aria-labelledby="specialities-title">
+    <div class="container specialities">
+      <div>
+        <p class="heading-ornament" aria-hidden="true"><i></i></p>
+        <h2 id="specialities-title" data-reveal>{p.specialitiesTitle}</h2>
+        <p class="muted" data-reveal>{p.specialitiesIntro}</p>
+        <a href={href(lang, 'menu')} class="arrow-link"><span>{s.common.exploreMenu}</span><Icon name="arrow" /></a>
+      </div>
+      <div class="specialities__list">
+        <DishLabel lang={lang} n={42} />
+        <DishLabel lang={lang} n={39} />
+        <DishLabel lang={lang} n={48} />
+      </div>
+    </div>
+  </section>
+
+  <ReserveBand lang={lang} />
+</Base>
+
+<style>
+  .cuisine {
+    display: grid;
+    gap: 48px;
+  }
+
+  .cuisine__block + .cuisine__block {
+    margin-top: 2.75rem;
+    padding-top: 2.75rem;
+    border-top: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  }
+
+  .cuisine__block h2 {
+    font-size: var(--step-2);
+    color: var(--teal);
+  }
+
+  .cuisine__block p {
+    margin: 0;
+  }
+
+  .cuisine :global(.cuisine__inline) {
+    aspect-ratio: 16 / 9;
+    margin-top: 2rem;
+  }
+
+  .cuisine :global(.cuisine__frame) {
+    aspect-ratio: 3 / 4;
+  }
+
+  @media (min-width: 960px) {
+    .cuisine {
+      grid-template-columns: 7fr 4fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .cuisine__aside {
+      position: sticky;
+      top: calc(var(--header-h) + 32px);
+    }
+  }
+
+  @media (max-width: 959px) {
+    .cuisine__aside {
+      display: none;
+    }
+  }
+
+  .specialities {
+    display: grid;
+    gap: 32px;
+  }
+
+  .specialities__list {
+    border-top: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  }
+
+  @media (min-width: 960px) {
+    .specialities {
+      grid-template-columns: 4fr 7fr;
+      gap: 72px;
+      align-items: start;
+    }
+  }
+</style>

@@ -1,0 +1,53 @@
+---
+/** Shared body for the privacy and cookie policies. */
+import Base from '../layouts/Base.astro';
+import PageHero from './PageHero.astro';
+import { t, type Lang } from '../i18n/config';
+
+interface Props {
+  lang: Lang;
+  kind: 'privacy' | 'cookies';
+}
+
+const { lang, kind } = Astro.props;
+const s = t(lang);
+const doc = s.legal[kind];
+const updated = new Date('2026-10-04').toLocaleDateString(lang === 'en' ? 'en-GB' : lang, { day: 'numeric', month: 'long', year: 'numeric' });
+---
+
+<Base lang={lang} page={kind} title={doc.title}>
+  <PageHero title={doc.title} subtitle={`${s.legal.updated}: ${updated}`} />
+  <section class="section paper">
+    <div class="container legal">
+      {
+        doc.sections.map((sec) => (
+          <section class="legal__section">
+            <h2>{sec.title}</h2>
+            <p>{sec.text}</p>
+          </section>
+        ))
+      }
+    </div>
+  </section>
+</Base>
+
+<style>
+  .legal {
+    max-width: 760px;
+  }
+
+  .legal__section + .legal__section {
+    margin-top: 2.25rem;
+    padding-top: 2.25rem;
+    border-top: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  }
+
+  .legal h2 {
+    font-size: var(--step-2);
+    color: var(--teal);
+  }
+
+  .legal p {
+    margin: 0;
+  }
+</style>

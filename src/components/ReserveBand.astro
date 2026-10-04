@@ -1,0 +1,77 @@
+---
+/** Closing conversion band: one big action plus the direct lines. */
+import Icon from './Icon.astro';
+import Seal from './Seal.astro';
+import { href, t, type Lang } from '../i18n/config';
+import { SITE, WHATSAPP_URL } from '../data/site';
+
+interface Props {
+  lang: Lang;
+  title?: string;
+  text?: string;
+}
+
+const { lang } = Astro.props;
+const s = t(lang);
+const title = Astro.props.title ?? s.home.reserveTitle;
+const text = Astro.props.text ?? s.home.reserveText;
+---
+
+<section class="reserve-band tin section">
+  <div class="container reserve-band__inner">
+    <div class="reserve-band__seal" data-reveal>
+      <Seal />
+    </div>
+    <div class="reserve-band__copy">
+      <h2 data-reveal>{title}</h2>
+      <p class="lead muted" data-reveal style="--i:1">{text}</p>
+      <div class="btn-row" data-reveal style="--i:2">
+        <a href={href(lang, 'reservations')} class="btn">
+          <Icon name="calendar" />
+          {s.common.reserveTable}
+        </a>
+        <a href={WHATSAPP_URL} class="btn btn--line" target="_blank" rel="noopener noreferrer">
+          <Icon name="whatsapp" />
+          {s.common.whatsapp}
+          <span class="visually-hidden">{s.common.opensNewTab}</span>
+        </a>
+        <a href={`tel:${SITE.phoneEnglish.tel}`} class="btn btn--line">
+          <Icon name="phone" />
+          {SITE.phoneEnglish.display}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .reserve-band__inner {
+    display: grid;
+    gap: 32px;
+    align-items: center;
+  }
+
+  .reserve-band__seal {
+    width: min(220px, 60%);
+  }
+
+  .reserve-band h2 {
+    max-width: 18ch;
+  }
+
+  .reserve-band .lead {
+    max-width: 46ch;
+    margin-bottom: 1.75rem;
+  }
+
+  @media (min-width: 900px) {
+    .reserve-band__inner {
+      grid-template-columns: 280px 1fr;
+      gap: 64px;
+    }
+
+    .reserve-band__seal {
+      width: 100%;
+    }
+  }
+</style>

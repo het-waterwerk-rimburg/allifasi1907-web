@@ -1,0 +1,112 @@
+---
+import { Font } from 'astro:assets';
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { LANGS, LANG_META, href, t, type Lang, type PageKey } from '../i18n/config';
+import { SITE } from '../data/site';
+
+interface Props {
+  lang: Lang;
+  page: PageKey;
+  title: string;
+  description?: string;
+  /** Use the title as-is (home page). */
+  fullTitle?: boolean;
+}
+
+const { lang, page, title, description, fullTitle = false } = Astro.props;
+const s = t(lang);
+const pageTitle = fullTitle ? `Alli Fasi 1907 · ${title}` : `${title} · Alli Fasi 1907`;
+const desc = description ?? s.meta.siteDescription;
+
+// Restaurant structured data — only facts from web-info/contact.md.
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Restaurant',
+  name: SITE.name,
+  servesCuisine: ['Greek', 'Meze'],
+  email: SITE.email,
+  telephone: SITE.phoneGreek.tel,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: SITE.address.street,
+    addressLocality: SITE.address.locality,
+    addressRegion: SITE.address.region,
+    postalCode: SITE.address.postalCode,
+    addressCountry: SITE.address.country,
+  },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+      opens: SITE.hours.opens,
+    },
+  ],
+  acceptsReservations: true,
+  foundingDate: '1907',
+};
+---
+
+<!doctype html>
+<html lang={LANG_META[lang].htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={desc} />
+    <meta name="theme-color" content="#0e3b43" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    {LANGS.map((l) => <link rel="alternate" hreflang={LANG_META[l].htmlLang} href={href(l, page)} />)}
+    <link rel="alternate" hreflang="x-default" href={href('en', page)} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Alli Fasi 1907" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:locale" content={LANG_META[lang].locale.replace('-', '_')} />
+
+    <Font cssVariable="--font-cinzel" preload />
+    <Font cssVariable="--font-jakarta" preload />
+    <Font cssVariable="--font-didot" />
+    <Font cssVariable="--font-commissioner" />
+
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{s.nav.skip}</a>
+    <Header lang={lang} page={page} />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+
+    <script>
+      // Reveal elements once as they enter the viewport. Content is visible by
+      // default; the hidden start state only applies with JS + motion allowed.
+      const items = document.querySelectorAll<HTMLElement>('[data-reveal]');
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce || !('IntersectionObserver' in window)) {
+        items.forEach((el) => el.classList.add('is-in'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue;
+              entry.target.classList.add('is-in');
+              io.unobserve(entry.target);
+            }
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+        );
+        items.forEach((el) => io.observe(el));
+      }
+    </script>
+  </body>
+</html>

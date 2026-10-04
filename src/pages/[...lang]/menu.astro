@@ -1,0 +1,493 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import ReserveBand from '../../components/ReserveBand.astro';
+import { formatPrice, langPaths, t, type Lang } from '../../i18n/config';
+import { MENU, type Tag } from '../../data/menu';
+import { SITE } from '../../data/site';
+
+export const getStaticPaths = langPaths;
+
+const { lang } = Astro.props as { lang: Lang };
+const s = t(lang);
+
+const filters: { tag: Tag; icon: 'leaf' | 'wheat' | 'chili' | 'star' }[] = [
+  { tag: 'vegan', icon: 'leaf' },
+  { tag: 'glutenFree', icon: 'wheat' },
+  { tag: 'spicy', icon: 'chili' },
+  { tag: 'father', icon: 'star' },
+];
+
+const tagIcon: Record<Tag, 'leaf' | 'wheat' | 'chili' | 'star' | 'calendar'> = {
+  vegan: 'leaf',
+  glutenFree: 'wheat',
+  spicy: 'chili',
+  father: 'star',
+  chef: 'star',
+  friSat: 'calendar',
+};
+
+const tagClass: Record<Tag, string> = {
+  vegan: 'badge badge--diet',
+  glutenFree: 'badge badge--diet',
+  spicy: 'badge badge--spicy',
+  father: 'badge',
+  chef: 'badge',
+  friSat: 'badge',
+};
+---
+
+<Base lang={lang} page="menu" title={s.menuPage.title} description={s.menuPage.subtitle}>
+  <PageHero title={s.menuPage.h1} subtitle={s.menuPage.subtitle}>
+    {
+      SITE.pdfMenu && (
+        <a href={SITE.pdfMenu} class="btn btn--line menu-pdf" download>
+          <Icon name="download" />
+          {s.nav.downloadPdf}
+        </a>
+      )
+    }
+  </PageHero>
+
+  <!-- Category bar: fixed under the header while reading -->
+  <nav class="cat-bar paper" aria-label={s.menuPage.categoriesLabel} data-cat-bar>
+    <div class="container cat-bar__inner">
+      <ul class="cat-bar__list">
+        {
+          MENU.map((c) => (
+            <li>
+              <a href={`#${c.id}`} data-cat-link={c.id}>
+                {c.title[lang]}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </nav>
+
+  <section class="paper menu-page">
+    <div class="container">
+      <div class="menu-tools">
+        <div class="filters" role="group" aria-labelledby="filters-label">
+          <span id="filters-label" class="filters__label">{s.menuPage.filtersLabel}</span>
+          {
+            filters.map((f) => (
+              <button type="button" class="chip" aria-pressed="false" data-filter={f.tag}>
+                <Icon name={f.icon} />
+                {s.tags[f.tag]}
+              </button>
+            ))
+          }
+          <button type="button" class="chip chip--reset" data-filter-reset hidden>
+            <Icon name="close" />
+            {s.menuPage.filterAll}
+          </button>
+        </div>
+        <p class="menu-tools__note muted">{s.menuPage.pricesNote} {s.menuPage.allergyNote}</p>
+        <p class="visually-hidden" role="status" aria-live="polite" data-filter-status></p>
+      </div>
+
+      {
+        MENU.map((cat) => (
+          <section class="menu-cat" id={cat.id} aria-labelledby={`${cat.id}-title`} data-cat>
+            <header class="menu-cat__head">
+              <h2 id={`${cat.id}-title`}>{cat.title[lang]}</h2>
+              <span class="menu-cat__count">
+                {cat.items.length} {s.menuPage.countLabel}
+              </span>
+            </header>
+            <ol class="menu-list">
+              {cat.items.map((item) => (
+                <li class="dish" id={`dish-${item.n}`} data-tags={(item.tags ?? []).join(' ')}>
+                  <div class="price-row">
+                    <h3 class="price-row__name dish__name">
+                      <span class="dish__n">{item.n}</span>
+                      <span>{item.name}</span>
+                    </h3>
+                    {typeof item.price === 'number' ? (
+                      <span class="price">{formatPrice(item.price, lang)}</span>
+                    ) : (
+                      <span class="price dish__options">
+                        {item.price.map((o) => (
+                          <span>
+                            <small>{o.label[lang]}</small> {formatPrice(o.price, lang)}
+                          </span>
+                        ))}
+                      </span>
+                    )}
+                  </div>
+                  <p class="dish__desc">{item.desc[lang]}</p>
+                  {item.note && <p class="dish__note">{item.note[lang]}</p>}
+                  {item.tags && item.tags.length > 0 && (
+                    <ul class="dish__tags">
+                      {item.tags.map((tag) => (
+                        <li class={tagClass[tag]}>
+                          <Icon name={tagIcon[tag]} />
+                          {s.tags[tag]}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              ))}
+            </ol>
+            <p class="menu-cat__empty muted" hidden data-empty>
+              {s.menuPage.filterNone}
+            </p>
+          </section>
+        ))
+      }
+    </div>
+  </section>
+
+  <ReserveBand lang={lang} />
+</Base>
+
+<style>
+  .menu-pdf {
+    margin-top: 1.75rem;
+  }
+
+  /* ---------- Category bar ---------- */
+  .cat-bar {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 40;
+    border-bottom: 1px solid color-mix(in srgb, var(--gold) 50%, transparent);
+    box-shadow: 0 8px 16px -14px rgb(10 44 50 / 0.5);
+  }
+
+  .cat-bar__inner {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .cat-bar__inner::-webkit-scrollbar {
+    display: none;
+  }
+
+  .cat-bar__list {
+    display: flex;
+    gap: 4px;
+    width: max-content;
+    margin: 0 auto;
+    padding: 0;
+    list-style: none;
+  }
+
+  .cat-bar a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 52px;
+    padding: 0 14px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-decoration: none;
+    color: var(--slate);
+  }
+
+  .cat-bar a::after {
+    content: '';
+    position: absolute;
+    left: 14px;
+    right: 14px;
+    bottom: 0;
+    height: 3px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform var(--dur) var(--ease-out);
+  }
+
+  .cat-bar a:hover,
+  .cat-bar a[aria-current='true'] {
+    color: var(--teal);
+  }
+
+  .cat-bar a[aria-current='true']::after {
+    transform: scaleX(1);
+  }
+
+  /* ---------- Tools ---------- */
+  .menu-page {
+    padding-block: clamp(2rem, 1.5rem + 2vw, 3rem) var(--section);
+  }
+
+  .menu-page :global(.menu-cat) {
+    scroll-margin-top: calc(var(--header-h) + 72px);
+  }
+
+  .menu-page .dish {
+    scroll-margin-top: calc(var(--header-h) + 96px);
+  }
+
+  .menu-tools {
+    display: grid;
+    gap: 12px;
+    margin-bottom: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .filters__label {
+    margin-right: 6px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-ink);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1px solid color-mix(in srgb, var(--teal) 35%, transparent);
+    border-radius: var(--radius);
+    background: var(--cream);
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--teal);
+    transition:
+      background-color var(--dur-fast) ease,
+      color var(--dur-fast) ease,
+      border-color var(--dur-fast) ease;
+  }
+
+  .chip :global(.icon) {
+    width: 18px;
+    height: 18px;
+  }
+
+  .chip:hover {
+    border-color: var(--teal);
+  }
+
+  .chip[aria-pressed='true'] {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: var(--cream);
+  }
+
+  .chip--reset {
+    border-style: dashed;
+    color: var(--slate);
+  }
+
+  .menu-tools__note {
+    margin: 0;
+    font-size: 0.875rem;
+  }
+
+  /* ---------- Categories ---------- */
+  .menu-cat {
+    padding-top: clamp(2rem, 1.5rem + 2vw, 3rem);
+  }
+
+  .menu-cat[hidden] {
+    display: none;
+  }
+
+  .menu-cat__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--teal);
+    box-shadow: 0 3px 0 -1px var(--cream), 0 4px 0 -1px var(--gold);
+  }
+
+  .menu-cat__head h2 {
+    margin: 0;
+    font-size: var(--step-3);
+    color: var(--teal);
+  }
+
+  .menu-cat__count {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold-ink);
+    white-space: nowrap;
+  }
+
+  .menu-list {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 960px) {
+    .menu-list {
+      grid-template-columns: 1fr 1fr;
+      column-gap: 64px;
+    }
+  }
+
+  .dish {
+    padding: 20px 0 18px;
+    border-bottom: 1px solid color-mix(in srgb, var(--gold) 38%, transparent);
+  }
+
+  .dish[hidden] {
+    display: none;
+  }
+
+  .dish:target {
+    animation: dish-flash 1800ms var(--ease-out);
+  }
+
+  @keyframes dish-flash {
+    from {
+      background: color-mix(in srgb, var(--gold) 24%, transparent);
+    }
+  }
+
+  .dish__name {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 1.1875rem;
+    line-height: 1.3;
+    color: var(--charcoal);
+  }
+
+  .dish__n {
+    flex: none;
+    min-width: 2ch;
+    font-family: var(--font-body);
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--gold-ink);
+  }
+
+  .dish .price {
+    font-size: 1.0625rem;
+    color: var(--teal);
+  }
+
+  .dish__options {
+    display: grid;
+    justify-items: end;
+    gap: 2px;
+  }
+
+  .dish__options small {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--slate);
+  }
+
+  .dish__desc {
+    margin: 6px 0 0;
+    padding-left: calc(2ch + 10px);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
+
+  .dish__note {
+    margin: 4px 0 0;
+    padding-left: calc(2ch + 10px);
+    font-size: 0.8125rem;
+    font-style: italic;
+    color: var(--slate);
+  }
+
+  .dish__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 10px 0 0;
+    padding: 0 0 0 calc(2ch + 10px);
+    list-style: none;
+  }
+
+  .menu-cat__empty {
+    padding: 20px 0;
+  }
+</style>
+
+<script>
+  // ----- Dietary filters (AND across selected tags) -----
+  const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+  const reset = document.querySelector<HTMLButtonElement>('[data-filter-reset]');
+  const status = document.querySelector<HTMLElement>('[data-filter-status]');
+  const dishes = Array.from(document.querySelectorAll<HTMLElement>('.dish'));
+  const cats = Array.from(document.querySelectorAll<HTMLElement>('[data-cat]'));
+
+  const apply = () => {
+    const active = chips.filter((c) => c.getAttribute('aria-pressed') === 'true').map((c) => c.dataset.filter!);
+    let shown = 0;
+    dishes.forEach((d) => {
+      const tags = (d.dataset.tags || '').split(' ');
+      const ok = active.every((tag) => tags.includes(tag));
+      d.hidden = !ok;
+      if (ok) shown++;
+    });
+    cats.forEach((cat) => {
+      const visible = cat.querySelectorAll('.dish:not([hidden])').length;
+      const empty = cat.querySelector<HTMLElement>('[data-empty]');
+      if (empty) empty.hidden = visible > 0 || active.length === 0;
+    });
+    if (reset) reset.hidden = active.length === 0;
+    if (status) status.textContent = `${shown} / ${dishes.length}`;
+  };
+
+  chips.forEach((chip) =>
+    chip.addEventListener('click', () => {
+      chip.setAttribute('aria-pressed', chip.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+      apply();
+    })
+  );
+  reset?.addEventListener('click', () => {
+    chips.forEach((c) => c.setAttribute('aria-pressed', 'false'));
+    apply();
+    chips[0]?.focus();
+  });
+
+  // ----- Category bar: highlight the category being read -----
+  const links = new Map<string, HTMLAnchorElement>();
+  document.querySelectorAll<HTMLAnchorElement>('[data-cat-link]').forEach((a) => links.set(a.dataset.catLink!, a));
+  const strip = document.querySelector<HTMLElement>('.cat-bar__inner');
+  const setCurrent = (id: string) => {
+    links.forEach((a, key) => {
+      if (key === id) {
+        a.setAttribute('aria-current', 'true');
+        // Keep the active category visible in the horizontal strip (phones),
+        // without moving the page itself.
+        if (strip && strip.scrollWidth > strip.clientWidth) {
+          const delta = a.getBoundingClientRect().left - strip.getBoundingClientRect().left;
+          strip.scrollTo({ left: strip.scrollLeft + delta - strip.clientWidth / 2 + a.offsetWidth / 2 });
+        }
+      } else a.removeAttribute('aria-current');
+    });
+  };
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setCurrent((e.target as HTMLElement).id);
+        });
+      },
+      { rootMargin: '-35% 0px -60% 0px' }
+    );
+    cats.forEach((c) => io.observe(c));
+  }
+</script>

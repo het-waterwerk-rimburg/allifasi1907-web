@@ -1,0 +1,236 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Frame from '../../components/Frame.astro';
+import Icon from '../../components/Icon.astro';
+import ReserveBand from '../../components/ReserveBand.astro';
+import { href, langPaths, t, type Lang } from '../../i18n/config';
+import { SITE, WHATSAPP_URL } from '../../data/site';
+import terraceMoon from '../../assets/photos/terrace-moon.avif';
+import courtyardDay from '../../assets/photos/courtyard-day.avif';
+import courtyardEvening from '../../assets/photos/courtyard-evening.avif';
+import terraceNight from '../../assets/photos/terrace-night.avif';
+import mezeTable from '../../assets/photos/meze-table.avif';
+import grilledBread from '../../assets/photos/grilled-bread.avif';
+
+export const getStaticPaths = langPaths;
+
+const { lang } = Astro.props as { lang: Lang };
+const s = t(lang);
+const p = s.restaurantPage;
+const alt = s.home.photoAlt;
+
+// Three wide + three single tiles fill a 3-column grid with no holes:
+// [wide, single] [single, wide] [wide, single].
+const gallery = [
+  { src: courtyardDay, alt: alt.courtyard, wide: true },
+  { src: mezeTable, alt: alt.table },
+  { src: grilledBread, alt: alt.bread },
+  { src: terraceNight, alt: alt.night, wide: true },
+  { src: terraceMoon, alt: alt.terrace, wide: true },
+  { src: courtyardEvening, alt: alt.evening },
+];
+---
+
+<Base lang={lang} page="restaurant" title={p.title} description={p.subtitle}>
+  <PageHero title={p.h1} subtitle={p.subtitle} />
+
+  <section class="section paper">
+    <div class="container space">
+      <Frame class="space__frame" data-reveal>
+        <Image src={courtyardDay} alt={alt.courtyard} widths={[480, 720, 893]} sizes="(min-width: 960px) 55vw, 92vw" />
+      </Frame>
+      <div class="space__copy">
+        <h2 data-reveal>{p.spaceTitle}</h2>
+        <p class="measure" data-reveal>{p.spaceText}</p>
+        <h2 data-reveal class="space__h2">{p.atmosphereTitle}</h2>
+        <p class="measure" data-reveal>{p.atmosphereText}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section tin" aria-labelledby="perfect-title">
+    <div class="container perfect">
+      <h2 id="perfect-title" data-reveal>{p.perfectTitle}</h2>
+      <ul class="perfect__list">
+        {
+          p.perfect.map((item, i) => (
+            <li data-reveal style={`--i:${i}`}>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section paper paper--deep" aria-labelledby="groups-title">
+    <div class="container groups">
+      <div class="label-panel groups__panel" data-reveal>
+        <Icon name="users" class="groups__icon" />
+        <h2 id="groups-title">{p.groupsTitle}</h2>
+        <p class="measure">{p.groupsText}</p>
+        <div class="btn-row">
+          <a href={`tel:${SITE.phoneEnglish.tel}`} class="btn">
+            <Icon name="phone" />
+            {s.common.callUs}
+          </a>
+          <a href={WHATSAPP_URL} class="btn btn--line-dark" target="_blank" rel="noopener noreferrer">
+            <Icon name="whatsapp" />
+            {s.common.whatsapp}
+            <span class="visually-hidden">{s.common.opensNewTab}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section paper" aria-labelledby="gallery-title">
+    <div class="container">
+      <p class="heading-ornament" aria-hidden="true"><i></i></p>
+      <h2 id="gallery-title" data-reveal>{p.galleryTitle}</h2>
+      <ul class="gallery">
+        {
+          gallery.map((g, i) => (
+            <li class:list={['gallery__item', { 'gallery__item--wide': g.wide }]} data-reveal style={`--i:${i % 3}`}>
+              <Frame class="gallery__frame">
+                <Image src={g.src} alt={g.alt} widths={[400, 700, 893]} sizes="(min-width: 960px) 40vw, 92vw" />
+              </Frame>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="gallery__more">
+        <a href={href(lang, 'reservations')} class="arrow-link"><span>{s.common.reserveTable}</span><Icon name="arrow" /></a>
+      </p>
+    </div>
+  </section>
+
+  <ReserveBand lang={lang} />
+</Base>
+
+<style>
+  .space {
+    display: grid;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .space__frame {
+    aspect-ratio: 4 / 3;
+  }
+
+  .space__h2 {
+    margin-top: 1.5em;
+  }
+
+  @media (min-width: 960px) {
+    .space {
+      grid-template-columns: 1.15fr 1fr;
+      gap: 72px;
+    }
+  }
+
+  .perfect__list {
+    display: grid;
+    gap: 0;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .perfect__list li {
+    display: grid;
+    gap: 4px 32px;
+    padding: 22px 0;
+    border-top: 1px solid var(--teal-line);
+  }
+
+  .perfect__list li:last-child {
+    border-bottom: 1px solid var(--teal-line);
+  }
+
+  .perfect__list h3 {
+    margin: 0;
+    color: var(--beige);
+  }
+
+  .perfect__list p {
+    margin: 0;
+    color: var(--on-tin-muted);
+  }
+
+  @media (min-width: 760px) {
+    .perfect__list li {
+      grid-template-columns: 1fr 1.6fr;
+      align-items: baseline;
+    }
+  }
+
+  .groups__panel {
+    max-width: 760px;
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  .groups__panel .btn-row {
+    justify-content: center;
+  }
+
+  .groups :global(.groups__icon) {
+    width: 36px;
+    height: 36px;
+    margin: 0 auto 8px;
+    color: var(--gold);
+    display: block;
+  }
+
+  .groups__panel h2 {
+    color: var(--teal);
+  }
+
+  .groups__panel p {
+    margin-inline: auto;
+  }
+
+  .gallery {
+    display: grid;
+    gap: 28px;
+    margin: 1.5rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .gallery__item :global(.gallery__frame) {
+    aspect-ratio: 4 / 3;
+  }
+
+  @media (min-width: 720px) {
+    .gallery {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .gallery {
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: clamp(260px, 22vw, 340px);
+    }
+
+    .gallery__item--wide {
+      grid-column: span 2;
+    }
+
+    .gallery__item :global(.gallery__frame) {
+      aspect-ratio: auto;
+      height: 100%;
+    }
+  }
+
+  .gallery__more {
+    margin: 2rem 0 0;
+    text-align: center;
+  }
+</style>

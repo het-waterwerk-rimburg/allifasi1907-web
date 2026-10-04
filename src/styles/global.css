@@ -1,0 +1,604 @@
+/* ==========================================================================
+   ALLI FASI 1907 — global styles
+   Brand tokens from web-info/allifasi1907-style.md. The visual world is the
+   early-1900s Greek grocery tin label: solid teal "tin" fields, cream "label
+   paper", ancient-gold double rules, meander borders and an oval 1907 seal.
+   ========================================================================== */
+
+:root {
+  /* Brand palette (style guide §2) */
+  --teal: #0e3b43; /* Aegean Teal — primary, tin fields */
+  --teal-deep: #0a2c32; /* darker tin, footer */
+  --teal-line: #2a5a63; /* hairlines on teal */
+  --beige: #d8c3a5; /* Warm Beige — secondary, rules, icons */
+  --cream: #fafaed; /* Soft Cream — page / label paper */
+  --cream-deep: #f1eedb; /* slightly darker paper for alternation */
+  --charcoal: #1c2426; /* Deep Charcoal — main text */
+  --slate: #5a6b70; /* Muted Slate — secondary text */
+  --olive: #6b705c; /* CTA */
+  --olive-dark: #4a503d; /* CTA hover */
+  --gold: #c09a58; /* Ancient Gold — rules, badges, highlights */
+  --gold-ink: #7a5c25; /* gold dark enough for small text on cream (AA) */
+
+  /* Semantic roles */
+  --bg: var(--cream);
+  --text: var(--charcoal);
+  --text-muted: var(--slate);
+  --on-tin: var(--cream);
+  --on-tin-muted: #c9d3cf;
+
+  /* Typography (style guide §3). Greek-only faces come first: their
+     unicode-range limits them to Greek, so Latin falls through to Cinzel /
+     Plus Jakarta Sans. */
+  --font-heading: var(--font-didot), var(--font-cinzel);
+  --font-body: var(--font-commissioner), var(--font-jakarta);
+
+  --step--1: 0.875rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.25rem;
+  --step-2: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
+  --step-3: clamp(1.75rem, 1.35rem + 1.8vw, 2.75rem);
+  --step-4: clamp(2.125rem, 1.4rem + 3.2vw, 3.875rem);
+
+  /* Space (8pt rhythm) */
+  --gutter: clamp(1rem, 0.6rem + 2vw, 2.5rem);
+  --section: clamp(4rem, 2.8rem + 6vw, 8rem);
+  --max: 1200px;
+
+  /* Lines & shape */
+  --rule: 1px solid var(--gold);
+  --radius: 2px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 180ms;
+  --dur: 320ms;
+  --dur-reveal: 800ms;
+
+  --header-h: 72px;
+
+  color-scheme: light;
+}
+
+/* ---------- Reset & base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + 16px);
+  scrollbar-color: var(--gold) var(--cream-deep);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
+  flex: 1;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: 0.01em;
+  margin: 0 0 0.6em;
+  text-wrap: balance;
+  color: inherit;
+}
+
+h1 {
+  font-size: var(--step-4);
+}
+h2 {
+  font-size: var(--step-3);
+}
+h3 {
+  font-size: var(--step-2);
+}
+
+p {
+  margin: 0 0 1em;
+  text-wrap: pretty;
+}
+
+a {
+  color: inherit;
+  text-decoration-color: var(--gold);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  transition: color var(--dur-fast) ease, text-decoration-color var(--dur-fast) ease;
+}
+
+a:hover {
+  text-decoration-color: currentColor;
+}
+
+::selection {
+  background: var(--gold);
+  color: var(--charcoal);
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+.paper :focus-visible {
+  outline-color: var(--teal);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+input,
+select,
+textarea {
+  accent-color: var(--olive);
+  caret-color: var(--teal);
+}
+
+/* Greek display voice: GFS Didot set in capitals (Chrome/Firefox drop the
+   tonos accents for lang="el" uppercase, as Greek typesetting requires). */
+:lang(el) :is(h1, h2, h3, .drawer__nav a) {
+  text-transform: uppercase;
+  letter-spacing: 0.035em;
+}
+
+button {
+  cursor: pointer;
+}
+
+/* ---------- Layout ---------- */
+.container {
+  width: min(100% - 2 * var(--gutter), var(--max));
+  margin-inline: auto;
+}
+
+.section {
+  padding-block: var(--section);
+}
+
+.section--tight {
+  padding-block: calc(var(--section) * 0.6);
+}
+
+/* Tin field (teal) and label paper (cream) */
+.tin {
+  background: var(--teal);
+  color: var(--on-tin);
+}
+
+.tin--deep {
+  background: var(--teal-deep);
+}
+
+.paper {
+  background: var(--cream);
+  color: var(--text);
+}
+
+.paper--deep {
+  background: var(--cream-deep);
+}
+
+.measure {
+  max-width: 62ch;
+}
+
+.lead {
+  font-size: var(--step-1);
+  line-height: 1.55;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+.tin .muted {
+  color: var(--on-tin-muted);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: -60px;
+  z-index: 200;
+  padding: 10px 16px;
+  background: var(--gold);
+  color: var(--charcoal);
+  font-weight: 600;
+  text-decoration: none;
+  transition: top var(--dur-fast) ease;
+}
+
+.skip-link:focus {
+  top: 12px;
+}
+
+/* ---------- Octagon: the cut-corner shape of a printed label ----------
+   Any element with .oct and a --c (corner cut) gets eight-sided corners. */
+.oct,
+.frame,
+.frame__gap,
+.frame__rule,
+.frame__pic,
+.label-panel,
+.label-panel::before,
+.label-panel::after {
+  clip-path: polygon(
+    var(--c) 0,
+    calc(100% - var(--c)) 0,
+    100% var(--c),
+    100% calc(100% - var(--c)),
+    calc(100% - var(--c)) 100%,
+    var(--c) 100%,
+    0 calc(100% - var(--c)),
+    0 var(--c)
+  );
+}
+
+/* ---------- Gold double-rule frame (label window) ----------
+   Nested octagons: outer gold rule (1px), ground gap (4px), inner gold rule
+   (1px), ground gap (4px), picture. Each inset shortens the cut by
+   inset x (sqrt2 - 1) so the diagonals stay parallel. */
+.frame {
+  --cut: 18px;
+  --frame-bg: var(--cream);
+  --c: var(--cut);
+  position: relative;
+  padding: 1px;
+  background: var(--gold);
+}
+
+.tin .frame {
+  --frame-bg: var(--teal);
+}
+
+.tin--deep .frame {
+  --frame-bg: var(--teal-deep);
+}
+
+.paper--deep .frame {
+  --frame-bg: var(--cream-deep);
+}
+
+.frame__gap {
+  --c: calc(var(--cut) - 0.41px);
+  height: 100%;
+  padding: 4px;
+  background: var(--frame-bg);
+}
+
+.frame__rule {
+  --c: calc(var(--cut) - 2.07px);
+  height: 100%;
+  padding: 1px;
+  background: var(--gold);
+}
+
+.frame__gap--inner {
+  --c: calc(var(--cut) - 2.48px);
+}
+
+.frame__pic {
+  --c: calc(var(--cut) - 4.14px);
+  height: 100%;
+  overflow: hidden;
+}
+
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- Label panel: paper with cut corners and an inner gold rule ---------- */
+.label-panel {
+  --cut: 24px;
+  --panel-bg: var(--cream);
+  --c: var(--cut);
+  position: relative;
+  isolation: isolate;
+  background: var(--panel-bg);
+  color: var(--text);
+  padding: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+}
+
+/* inner rule, 8px in: a gold octagon with a 1px-smaller paper octagon on top */
+.label-panel::before,
+.label-panel::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.label-panel::before {
+  --c: calc(var(--cut) - 3.31px);
+  inset: 8px;
+  background: var(--gold);
+}
+
+.label-panel::after {
+  --c: calc(var(--cut) - 3.73px);
+  inset: 9px;
+  background: var(--panel-bg);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  --btn-bg: var(--olive);
+  --btn-fg: var(--cream);
+  --btn-line: var(--gold);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  min-height: 48px;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--btn-line);
+  border-radius: var(--radius);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: 1.2;
+  box-shadow: inset 0 0 0 3px var(--btn-bg), inset 0 0 0 4px color-mix(in srgb, var(--btn-line) 55%, transparent);
+  transition:
+    background-color var(--dur) var(--ease-out),
+    color var(--dur) var(--ease-out),
+    box-shadow var(--dur) var(--ease-out),
+    transform var(--dur-fast) ease;
+  touch-action: manipulation;
+}
+
+.btn:hover {
+  --btn-bg: var(--olive-dark);
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn svg {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+}
+
+/* Outline on teal */
+.btn--line {
+  --btn-bg: transparent;
+  --btn-fg: var(--cream);
+  box-shadow: none;
+}
+
+.btn--line:hover {
+  --btn-bg: color-mix(in srgb, var(--gold) 16%, transparent);
+}
+
+/* Outline on paper */
+.paper .btn--line,
+.btn--line-dark {
+  --btn-bg: transparent;
+  --btn-fg: var(--teal);
+  --btn-line: var(--teal);
+  box-shadow: none;
+}
+
+.paper .btn--line:hover,
+.btn--line-dark:hover {
+  --btn-bg: var(--teal);
+  --btn-fg: var(--cream);
+}
+
+/* Gold highlight (secondary CTA / badges per style guide) */
+.btn--gold {
+  --btn-bg: var(--gold);
+  --btn-fg: var(--charcoal);
+  --btn-line: var(--gold);
+  box-shadow: inset 0 0 0 3px var(--btn-bg), inset 0 0 0 4px color-mix(in srgb, var(--charcoal) 35%, transparent);
+}
+
+.btn--gold:hover {
+  --btn-bg: #d1ae6f;
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* Text link with arrow */
+.arrow-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--teal);
+  min-height: 44px;
+}
+
+.tin .arrow-link {
+  color: var(--beige);
+}
+
+.tin .label-panel .arrow-link {
+  color: var(--teal);
+}
+
+.arrow-link svg {
+  width: 1.1em;
+  height: 1.1em;
+  transition: transform var(--dur) var(--ease-out);
+}
+
+.arrow-link:hover svg {
+  transform: translateX(4px);
+}
+
+.arrow-link span {
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 0.3em;
+}
+
+/* ---------- Badges (Ancient Gold, style guide) ---------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+  padding: 0.2em 0.6em;
+  border: 1px solid currentColor;
+  border-radius: var(--radius);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+  white-space: nowrap;
+  color: var(--gold-ink);
+}
+
+.badge svg {
+  width: 1em;
+  height: 1em;
+}
+
+.badge--diet {
+  color: var(--olive-dark);
+}
+
+.badge--spicy {
+  color: #8a3b24;
+}
+
+/* ---------- Section heading with ornament ---------- */
+.heading-ornament {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 1.25rem;
+  color: var(--gold);
+}
+
+.heading-ornament::before,
+.heading-ornament::after {
+  content: '';
+  height: 1px;
+  flex: 0 0 40px;
+  background: currentColor;
+}
+
+.heading-ornament i {
+  width: 7px;
+  height: 7px;
+  background: currentColor;
+  transform: rotate(45deg);
+}
+
+.center {
+  text-align: center;
+}
+
+.center .heading-ornament {
+  justify-content: center;
+}
+
+/* ---------- Price list (menu rows) ---------- */
+.price-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 12px;
+  align-items: baseline;
+}
+
+.price-row__name {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+
+.price-row__name::after {
+  content: '';
+  flex: 1;
+  min-width: 24px;
+  border-bottom: 1px dotted color-mix(in srgb, var(--gold) 80%, transparent);
+  transform: translateY(-4px);
+}
+
+.price {
+  font-variant-numeric: tabular-nums lining-nums;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* ---------- Reveal motion (one grammar, once, from visible default) ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(18px);
+    transition:
+      opacity var(--dur-reveal) var(--ease-out),
+      transform var(--dur-reveal) var(--ease-out);
+    transition-delay: calc(var(--i, 0) * 90ms);
+  }
+
+  .js [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+  }
+}

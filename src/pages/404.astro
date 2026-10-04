@@ -1,0 +1,49 @@
+---
+import Base from '../layouts/Base.astro';
+import Meander from '../components/Meander.astro';
+import Seal from '../components/Seal.astro';
+import { href, t } from '../i18n/config';
+
+const lang = 'en';
+const s = t(lang);
+---
+
+<Base lang={lang} page="home" title={s.notFound.title}>
+  <section class="nf tin">
+    <div class="container nf__inner">
+      <div class="nf__seal"><Seal /></div>
+      <h1>{s.notFound.h1}</h1>
+      <p class="lead muted">{s.notFound.text}</p>
+      <div class="btn-row nf__actions">
+        <a href={href(lang, 'home')} class="btn">{s.notFound.back}</a>
+        <a href={href(lang, 'menu')} class="btn btn--line">{s.common.viewMenu}</a>
+      </div>
+    </div>
+    <Meander />
+  </section>
+</Base>
+
+<style>
+  .nf__inner {
+    padding-block: clamp(4rem, 3rem + 6vw, 8rem);
+    text-align: center;
+  }
+
+  .nf__seal {
+    width: 180px;
+    margin: 0 auto 2rem;
+  }
+
+  .nf h1 {
+    max-width: 18ch;
+    margin-inline: auto;
+  }
+
+  .nf .lead {
+    margin-bottom: 2rem;
+  }
+
+  .nf__actions {
+    justify-content: center;
+  }
+</style>

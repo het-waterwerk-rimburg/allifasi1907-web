@@ -1,0 +1,44 @@
+---
+/** Inner-page opener: a teal tin band with the title set like a label. */
+import Meander from './Meander.astro';
+
+interface Props {
+  title: string;
+  subtitle?: string;
+}
+
+const { title, subtitle } = Astro.props;
+---
+
+<section class="page-hero tin">
+  <div class="container page-hero__inner">
+    <p class="heading-ornament" aria-hidden="true"><i></i></p>
+    <h1>{title}</h1>
+    {subtitle && <p class="lead page-hero__sub">{subtitle}</p>}
+    <slot />
+  </div>
+  <Meander />
+</section>
+
+<style>
+  .page-hero__inner {
+    padding-block: clamp(3rem, 2rem + 4vw, 5.5rem) clamp(2.5rem, 2rem + 3vw, 4.5rem);
+    text-align: center;
+  }
+
+  .page-hero .heading-ornament {
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .page-hero h1 {
+    max-width: 22ch;
+    margin-inline: auto;
+  }
+
+  .page-hero__sub {
+    max-width: 52ch;
+    margin: 0 auto;
+    color: var(--on-tin-muted);
+  }
+</style>

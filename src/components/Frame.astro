@@ -1,0 +1,25 @@
+---
+/**
+ * Gold double-rule label window with cut (notched) corners, the way a printed
+ * tin label frames its picture. Built from nested octagons: outer gold rule,
+ * ground gap, inner gold rule, ground gap, picture. See .frame in global.css.
+ */
+interface Props {
+  class?: string;
+  [key: string]: unknown;
+}
+
+const { class: className, ...rest } = Astro.props;
+---
+
+<div class:list={['frame', className]} {...rest}>
+  <div class="frame__gap">
+    <div class="frame__rule">
+      <div class="frame__gap frame__gap--inner">
+        <div class="frame__pic">
+          <slot />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

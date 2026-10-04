@@ -1,0 +1,106 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Frame from '../../components/Frame.astro';
+import Icon from '../../components/Icon.astro';
+import ReserveBand from '../../components/ReserveBand.astro';
+import { langPaths, t, type Lang } from '../../i18n/config';
+import { GOOGLE_REVIEWS_URL, TRIPADVISOR_URL } from '../../data/site';
+import terraceNight from '../../assets/photos/terrace-night.avif';
+
+export const getStaticPaths = langPaths;
+
+const { lang } = Astro.props as { lang: Lang };
+const s = t(lang);
+const p = s.reviewsPage;
+
+// No testimonials are shown until real ones are provided (see PRODUCT.md).
+const sources = [
+  { title: p.googleTitle, text: p.googleText, cta: p.googleCta, url: GOOGLE_REVIEWS_URL },
+  { title: p.tripTitle, text: p.tripText, cta: p.tripCta, url: TRIPADVISOR_URL },
+];
+---
+
+<Base lang={lang} page="reviews" title={p.title} description={p.subtitle}>
+  <PageHero title={p.h1} subtitle={p.subtitle} />
+
+  <section class="section paper">
+    <div class="container sources">
+      {
+        sources.map((src, i) => (
+          <article class="label-panel source" data-reveal style={`--i:${i}`}>
+            <h2>{src.title}</h2>
+            <p>{src.text}</p>
+            <a href={src.url} class="btn" target="_blank" rel="noopener noreferrer">
+              {src.cta}
+              <Icon name="external" />
+              <span class="visually-hidden">{s.common.opensNewTab}</span>
+            </a>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section paper paper--deep" aria-labelledby="leave-title">
+    <div class="container leave">
+      <Frame class="leave__frame" data-reveal>
+        <Image src={terraceNight} alt={s.home.photoAlt.night} widths={[480, 720, 893]} sizes="(min-width: 960px) 44vw, 92vw" />
+      </Frame>
+      <div>
+        <h2 id="leave-title" data-reveal>{p.leaveTitle}</h2>
+        <p class="lead measure" data-reveal>{p.leaveText}</p>
+      </div>
+    </div>
+  </section>
+
+  <ReserveBand lang={lang} title={p.ctaTitle} />
+</Base>
+
+<style>
+  .sources {
+    display: grid;
+    gap: 28px;
+  }
+
+  @media (min-width: 820px) {
+    .sources {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .source {
+    background: var(--cream-deep);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .source h2 {
+    font-size: var(--step-2);
+    color: var(--teal);
+  }
+
+  .source p {
+    flex: 1;
+    color: var(--text-muted);
+  }
+
+  .leave {
+    display: grid;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .leave :global(.leave__frame) {
+    aspect-ratio: 4 / 3;
+  }
+
+  @media (min-width: 960px) {
+    .leave {
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+    }
+  }
+</style>

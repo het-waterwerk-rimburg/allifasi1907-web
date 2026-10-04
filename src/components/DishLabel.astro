@@ -1,0 +1,81 @@
+---
+/** A dish set like a grocer's price label: name, dotted leader, price, note. */
+import Icon from './Icon.astro';
+import { formatPrice, href, t, type Lang } from '../i18n/config';
+import { itemByNumber } from '../data/menu';
+
+interface Props {
+  lang: Lang;
+  n: number;
+  /** Link to the dish on the menu page. */
+  link?: boolean;
+}
+
+const { lang, n, link = true } = Astro.props;
+const s = t(lang);
+const item = itemByNumber(n);
+const price = typeof item.price === 'number' ? formatPrice(item.price, lang) : formatPrice(item.price[0].price, lang);
+const badge = item.tags?.includes('father') ? s.tags.father : item.tags?.includes('chef') ? s.tags.chef : null;
+---
+
+<article class="dish-label">
+  <div class="price-row">
+    <h3 class="price-row__name dish-label__name">
+      {
+        link ? (
+          <a href={href(lang, 'menu', `dish-${item.n}`)}>{item.name}</a>
+        ) : (
+          item.name
+        )
+      }
+    </h3>
+    <span class="price">{price}</span>
+  </div>
+  <p class="dish-label__desc">{item.desc[lang]}</p>
+  {
+    badge && (
+      <span class="badge">
+        <Icon name="star" />
+        {badge}
+      </span>
+    )
+  }
+</article>
+
+<style>
+  .dish-label {
+    padding-block: 20px;
+    border-bottom: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  }
+
+  .dish-label__name {
+    margin: 0;
+    font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  }
+
+  .dish-label__name a {
+    text-decoration: none;
+  }
+
+  .dish-label__name a:hover {
+    color: var(--teal);
+    text-decoration: underline;
+    text-decoration-color: var(--gold);
+  }
+
+  .dish-label .price {
+    font-size: 1.0625rem;
+    color: var(--teal);
+  }
+
+  .dish-label__desc {
+    margin: 6px 0 10px;
+    max-width: 52ch;
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+  }
+
+  .dish-label__desc:last-child {
+    margin-bottom: 0;
+  }
+</style>

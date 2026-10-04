@@ -1,0 +1,209 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Frame from '../../components/Frame.astro';
+import Seal from '../../components/Seal.astro';
+import ReserveBand from '../../components/ReserveBand.astro';
+import { langPaths, t, type Lang } from '../../i18n/config';
+import courtyardDay from '../../assets/photos/courtyard-day.avif';
+import courtyardEvening from '../../assets/photos/courtyard-evening.avif';
+
+export const getStaticPaths = langPaths;
+
+const { lang } = Astro.props as { lang: Lang };
+const s = t(lang);
+const p = s.storyPage;
+---
+
+<Base lang={lang} page="story" title={p.title} description={p.subtitle}>
+  <PageHero title={p.h1} subtitle={p.subtitle} />
+
+  <section class="section paper">
+    <div class="container story-grid">
+      <ol class="ledger">
+        {
+          p.sections.map((sec, i) => (
+            <li class="ledger__item" data-reveal style={`--i:${i}`}>
+              <span class="ledger__mark" aria-hidden="true" />
+              <h2>{sec.title}</h2>
+              <p class="measure">{sec.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+
+      <div class="story-visual">
+        <Frame class="story-visual__frame" data-reveal>
+          <Image src={courtyardDay} alt={s.home.photoAlt.courtyard} widths={[480, 720, 893]} sizes="(min-width: 960px) 40vw, 92vw" />
+        </Frame>
+        <div class="story-visual__seal" data-reveal style="--i:1">
+          <Seal />
+        </div>
+        <p class="story-visual__note muted">{p.photosNote}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section tin" aria-labelledby="philosophy-title">
+    <div class="container">
+      <p class="heading-ornament" aria-hidden="true"><i></i></p>
+      <h2 id="philosophy-title" data-reveal>{p.philosophyTitle}</h2>
+      <dl class="philosophy">
+        {
+          p.philosophy.map((item, i) => (
+            <div class="philosophy__item" data-reveal style={`--i:${i}`}>
+              <dt>{item.title}</dt>
+              <dd>{item.text}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </section>
+
+  <section class="section paper paper--deep" aria-labelledby="today-title">
+    <div class="container today">
+      <Frame class="today__frame" data-reveal>
+        <Image src={courtyardEvening} alt={s.home.photoAlt.evening} widths={[480, 720, 893]} sizes="(min-width: 960px) 44vw, 92vw" />
+      </Frame>
+      <div>
+        <h2 id="today-title" data-reveal>{p.todayTitle}</h2>
+        <p class="lead measure" data-reveal>{p.todayText}</p>
+      </div>
+    </div>
+  </section>
+
+  <ReserveBand lang={lang} />
+</Base>
+
+<style>
+  .story-grid {
+    display: grid;
+    gap: 56px;
+  }
+
+  @media (min-width: 960px) {
+    .story-grid {
+      grid-template-columns: 7fr 5fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .story-visual {
+      position: sticky;
+      top: calc(var(--header-h) + 32px);
+    }
+  }
+
+  /* A ledger down a gold rule: the family's account book */
+  .ledger {
+    position: relative;
+    margin: 0;
+    padding: 0 0 0 36px;
+    list-style: none;
+    border-left: 1px solid var(--gold);
+  }
+
+  .ledger__item {
+    position: relative;
+    padding-bottom: 2.75rem;
+  }
+
+  .ledger__item:last-child {
+    padding-bottom: 0;
+  }
+
+  .ledger__mark {
+    position: absolute;
+    left: -42px;
+    top: 0.55em;
+    width: 11px;
+    height: 11px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    box-shadow: 0 0 0 5px var(--cream);
+  }
+
+  .ledger h2 {
+    font-size: var(--step-2);
+    color: var(--teal);
+    margin-bottom: 0.5em;
+  }
+
+  .ledger p {
+    margin: 0;
+  }
+
+  .story-visual {
+    position: relative;
+  }
+
+  .story-visual__frame {
+    aspect-ratio: 4 / 5;
+  }
+
+  .story-visual__seal {
+    width: 150px;
+    margin: -64px 0 0 -16px;
+    position: relative;
+    z-index: 3;
+    filter: drop-shadow(0 8px 14px rgb(10 44 50 / 0.3));
+  }
+
+  .story-visual__note {
+    margin: 12px 0 0;
+    font-size: 0.875rem;
+  }
+
+  .philosophy {
+    display: grid;
+    gap: 0;
+    margin: 2rem 0 0;
+  }
+
+  .philosophy__item {
+    padding: 22px 0;
+    border-top: 1px solid var(--teal-line);
+  }
+
+  .philosophy dt {
+    font-family: var(--font-heading);
+    font-size: var(--step-2);
+    color: var(--beige);
+    margin-bottom: 6px;
+  }
+
+  .philosophy dd {
+    margin: 0;
+    color: var(--on-tin-muted);
+  }
+
+  @media (min-width: 820px) {
+    .philosophy {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+
+    .philosophy__item {
+      border-top: 1px solid var(--gold);
+    }
+  }
+
+  .today {
+    display: grid;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .today__frame {
+    aspect-ratio: 4 / 3;
+  }
+
+  @media (min-width: 960px) {
+    .today {
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+    }
+  }
+</style>

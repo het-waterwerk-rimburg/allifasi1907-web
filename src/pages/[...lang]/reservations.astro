@@ -1,0 +1,597 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Icon from '../../components/Icon.astro';
+import Frame from '../../components/Frame.astro';
+import { LANG_META, langPaths, t, type Lang } from '../../i18n/config';
+import { SITE, DIRECTIONS_URL, MAPS_EMBED_URL, WHATSAPP_URL } from '../../data/site';
+
+export const getStaticPaths = langPaths;
+
+const { lang } = Astro.props as { lang: Lang };
+const s = t(lang);
+const p = s.reservePage;
+
+// 18:00 → 22:45 (kitchen last order), every 15 minutes.
+const times: string[] = [];
+for (let m = 18 * 60; m <= 22 * 60 + 45; m += 15) {
+  times.push(`${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`);
+}
+const guests = Array.from({ length: 12 }, (_, i) => String(i + 1)).concat('12+');
+
+// Labels for the WhatsApp message, read by the client script.
+const waText = {
+  intro: p.waIntro,
+  date: p.waDate,
+  time: p.waTime,
+  guests: p.waGuests,
+  name: p.waName,
+  phone: p.waPhone,
+  email: p.waEmail,
+  message: p.waMessage,
+  sunday: p.sundayWarning,
+  past: p.pastWarning,
+  locale: LANG_META[lang].locale,
+};
+---
+
+<Base lang={lang} page="reservations" title={p.title} description={p.subtitle}>
+  <PageHero title={p.h1} subtitle={p.subtitle} />
+
+  <section class="section paper">
+    <div class="container booking">
+      <!-- Booking form → prefilled WhatsApp message -->
+      <form class="label-panel booking__form" data-booking novalidate data-text={JSON.stringify(waText)} data-wa={SITE.phoneEnglish.wa}>
+        <h2>{p.formTitle}</h2>
+        <div class="field-grid">
+          <div class="field">
+            <label for="b-date">{p.date} <span aria-hidden="true">*</span></label>
+            <input id="b-date" name="date" type="date" required aria-describedby="b-date-error" />
+            <p class="field__error" id="b-date-error" hidden></p>
+          </div>
+          <div class="field">
+            <label for="b-time">{p.time} <span aria-hidden="true">*</span></label>
+            <select id="b-time" name="time" required>
+              <option value="">{p.chooseTime}</option>
+              {times.map((tm) => <option value={tm}>{tm}</option>)}
+            </select>
+          </div>
+          <div class="field">
+            <label for="b-guests">{p.guests} <span aria-hidden="true">*</span></label>
+            <select id="b-guests" name="guests" required>
+              {guests.map((g) => <option value={g} selected={g === '2'}>{g}</option>)}
+            </select>
+          </div>
+          <div class="field">
+            <label for="b-name">{p.name} <span aria-hidden="true">*</span></label>
+            <input id="b-name" name="name" type="text" autocomplete="name" required minlength="2" />
+          </div>
+          <div class="field">
+            <label for="b-phone">{p.phone} <span aria-hidden="true">*</span></label>
+            <input id="b-phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" required />
+          </div>
+          <div class="field">
+            <label for="b-email">{p.emailField}</label>
+            <input id="b-email" name="email" type="email" autocomplete="email" />
+          </div>
+          <div class="field field--full">
+            <label for="b-message">{p.message}</label>
+            <textarea id="b-message" name="message" rows="3"></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn booking__submit">
+          <Icon name="whatsapp" />
+          {p.submit}
+        </button>
+        <p class="booking__note muted">{p.formNote}</p>
+      </form>
+
+      <!-- Direct lines + hours -->
+      <aside class="booking__aside">
+        <h2>{p.directTitle}</h2>
+        <ul class="lines">
+          <li>
+            <span class="lines__label">{s.contact.englishLine}</span>
+            <a href={`tel:${SITE.phoneEnglish.tel}`} class="lines__value"><Icon name="phone" />{SITE.phoneEnglish.display}</a>
+            <a href={WHATSAPP_URL} class="lines__value" target="_blank" rel="noopener noreferrer"
+              ><Icon name="whatsapp" />{s.common.whatsapp}<span class="visually-hidden">{s.common.opensNewTab}</span></a
+            >
+            <span class="lines__meta">{s.contact.englishHours}</span>
+          </li>
+          <li>
+            <span class="lines__label">{s.contact.greekLine}</span>
+            <a href={`tel:${SITE.phoneGreek.tel}`} class="lines__value"><Icon name="phone" />{SITE.phoneGreek.display}</a>
+          </li>
+          <li>
+            <span class="lines__label">{s.contact.emailLine}</span>
+            <a href={`mailto:${SITE.email}`} class="lines__value"><Icon name="mail" />{SITE.email}</a>
+          </li>
+        </ul>
+
+        <div class="hours">
+          <h3><Icon name="clock" />{s.hours.title}</h3>
+          <p>
+            <strong>{s.hours.days}</strong> · {s.hours.time}<br />
+            {s.hours.kitchen}<br />
+            {s.hours.sunday}
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- How to find us -->
+  <section class="section tin" aria-labelledby="find-title">
+    <div class="container find">
+      <div>
+        <h2 id="find-title">{p.findTitle}</h2>
+        <address class="find__address">
+          <Icon name="pin" />
+          <span>{s.contact.address}</span>
+        </address>
+        <ul class="find__distances">
+          {p.distances.map((d) => <li>{d}</li>)}
+        </ul>
+        <a href={DIRECTIONS_URL} class="btn btn--gold" target="_blank" rel="noopener noreferrer">
+          <Icon name="route" />
+          {s.common.getDirections}
+          <span class="visually-hidden">{s.common.opensNewTab}</span>
+        </a>
+      </div>
+      <Frame class="map" data-map>
+        <div class="map__placeholder" data-map-placeholder>
+          <Icon name="pin" class="map__pin" />
+          <button type="button" class="btn btn--line" data-map-load data-src={MAPS_EMBED_URL} data-title={p.mapTitle}>
+            {p.mapButton}
+          </button>
+          <p class="map__note">{p.mapNote}</p>
+        </div>
+      </Frame>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section paper" aria-labelledby="faq-title">
+    <div class="container faq">
+      <h2 id="faq-title">{p.faqTitle}</h2>
+      <div class="faq__list">
+        {
+          p.faq.map((item) => (
+            <details class="faq__item">
+              <summary>
+                <span>{item.q}</span>
+                <Icon name="chevron" class="faq__chevron" />
+              </summary>
+              <p>{item.a}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .booking {
+    display: grid;
+    gap: 48px;
+    align-items: start;
+  }
+
+  @media (min-width: 1000px) {
+    .booking {
+      grid-template-columns: 1.5fr 1fr;
+      gap: 64px;
+    }
+  }
+
+  .booking__form {
+    background: var(--cream-deep);
+  }
+
+  .booking__form h2,
+  .booking__aside h2 {
+    font-size: var(--step-2);
+    color: var(--teal);
+  }
+
+  .field-grid {
+    display: grid;
+    gap: 18px;
+  }
+
+  @media (min-width: 600px) {
+    .field-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .field--full {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .field-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+
+  .field label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--teal);
+  }
+
+  .field label span {
+    color: var(--gold-ink);
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 10px 12px;
+    border: 1px solid color-mix(in srgb, var(--teal) 30%, transparent);
+    border-radius: var(--radius);
+    background: var(--cream);
+    color: var(--charcoal);
+    font-size: 1rem;
+    transition: border-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+  }
+
+  .field textarea {
+    resize: vertical;
+  }
+
+  /* Native controls in the palette: teal chevron and calendar glyph */
+  .field select {
+    appearance: none;
+    padding-right: 40px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230e3b43' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6.5 9.5 5.5 5.5 5.5-5.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 18px;
+    cursor: pointer;
+  }
+
+  .field input[type='date']::-webkit-calendar-picker-indicator {
+    width: 20px;
+    height: 20px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230e3b43' stroke-width='1.6' stroke-linecap='round'%3E%3Crect x='4' y='5.5' width='16' height='14' rx='1.5'/%3E%3Cpath d='M4 10h16M8.5 3.5v4M15.5 3.5v4'/%3E%3C/svg%3E") center / 20px no-repeat;
+    cursor: pointer;
+    opacity: 1;
+  }
+
+  .field input[type='date'] {
+    color-scheme: light;
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--teal);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 45%, transparent);
+  }
+
+  .field [aria-invalid='true'] {
+    border-color: #9b3a24;
+  }
+
+  .field__error {
+    margin: 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #8a3b24;
+  }
+
+  .booking__submit {
+    margin-top: 24px;
+    width: 100%;
+  }
+
+  @media (min-width: 600px) {
+    .booking__submit {
+      width: auto;
+    }
+  }
+
+  .booking__note {
+    margin: 14px 0 0;
+    font-size: 0.875rem;
+    max-width: 60ch;
+  }
+
+  .lines {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .lines li {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 16px 0;
+    border-top: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  }
+
+  .lines__label {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold-ink);
+  }
+
+  .lines__value {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 40px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--teal);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+  }
+
+  .lines__value:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--gold);
+  }
+
+  .lines__value :global(.icon) {
+    flex: none;
+    width: 20px;
+    height: 20px;
+    color: var(--gold-ink);
+  }
+
+  .lines__meta {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+  }
+
+  .hours {
+    margin-top: 8px;
+    padding: 20px;
+    border: var(--rule);
+  }
+
+  .hours h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: var(--step-1);
+    color: var(--teal);
+  }
+
+  .hours h3 :global(.icon) {
+    color: var(--gold-ink);
+  }
+
+  .hours p {
+    margin: 0;
+  }
+
+  /* ---------- Find us ---------- */
+  .find {
+    display: grid;
+    gap: 40px;
+    align-items: center;
+  }
+
+  @media (min-width: 960px) {
+    .find {
+      grid-template-columns: 1fr 1.3fr;
+      gap: 64px;
+    }
+  }
+
+  .find__address {
+    display: flex;
+    gap: 12px;
+    font-style: normal;
+    font-size: var(--step-1);
+    line-height: 1.5;
+  }
+
+  .find__address :global(.icon) {
+    flex: none;
+    margin-top: 4px;
+    color: var(--gold);
+  }
+
+  .find__distances {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    margin: 20px 0 28px;
+    padding: 0;
+    list-style: none;
+    color: var(--beige);
+    font-weight: 600;
+  }
+
+  .find__distances li::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin: 0 10px 2px 0;
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+
+  .find :global(.map) {
+    aspect-ratio: 4 / 3;
+  }
+
+  .find :global(.map .frame__pic) {
+    background: var(--teal-deep);
+  }
+
+  .find :global(.map iframe) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .map__placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    height: 100%;
+    padding: 24px;
+    text-align: center;
+  }
+
+  .find :global(.map__pin) {
+    width: 40px;
+    height: 40px;
+    color: var(--gold);
+  }
+
+  .map__note {
+    margin: 0;
+    max-width: 34ch;
+    font-size: 0.875rem;
+    color: var(--on-tin-muted);
+  }
+
+  /* ---------- FAQ ---------- */
+  .faq {
+    max-width: 860px;
+  }
+
+  .faq__list {
+    border-top: 1px solid color-mix(in srgb, var(--gold) 55%, transparent);
+  }
+
+  .faq__item {
+    border-bottom: 1px solid color-mix(in srgb, var(--gold) 55%, transparent);
+  }
+
+  .faq__item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 64px;
+    padding: 12px 0;
+    list-style: none;
+    font-family: var(--font-heading);
+    font-size: var(--step-1);
+    font-weight: 600;
+    color: var(--teal);
+    cursor: pointer;
+  }
+
+  .faq__item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq :global(.faq__chevron) {
+    flex: none;
+    color: var(--gold-ink);
+    transition: transform var(--dur) var(--ease-out);
+  }
+
+  .faq__item[open] :global(.faq__chevron) {
+    transform: rotate(180deg);
+  }
+
+  .faq__item p {
+    margin: 0 0 20px;
+    max-width: 66ch;
+    color: var(--text-muted);
+  }
+</style>
+
+<script>
+  // ----- Booking form → WhatsApp -----
+  const form = document.querySelector<HTMLFormElement>('[data-booking]');
+  if (form) {
+    const text = JSON.parse(form.dataset.text || '{}');
+    const wa = form.dataset.wa || '';
+    const date = form.querySelector<HTMLInputElement>('#b-date')!;
+    const dateError = form.querySelector<HTMLElement>('#b-date-error')!;
+
+    const today = new Date();
+    const iso = (d: Date) =>
+      `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    date.min = iso(today);
+
+    const checkDate = () => {
+      let msg = '';
+      if (date.value) {
+        const d = new Date(`${date.value}T12:00:00`);
+        if (date.value < iso(today)) msg = text.past;
+        else if (d.getDay() === 0) msg = text.sunday;
+      }
+      date.setCustomValidity(msg);
+      dateError.textContent = msg;
+      dateError.hidden = !msg;
+      date.setAttribute('aria-invalid', msg ? 'true' : 'false');
+      return !msg;
+    };
+    date.addEventListener('change', checkDate);
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      checkDate();
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        const firstInvalid = form.querySelector<HTMLElement>(':invalid');
+        firstInvalid?.focus();
+        return;
+      }
+      const data = new FormData(form);
+      const nice = new Date(`${data.get('date')}T12:00:00`).toLocaleDateString(text.locale, {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      });
+      const lines = [
+        text.intro,
+        '',
+        `${text.date}: ${nice}`,
+        `${text.time}: ${data.get('time')}`,
+        `${text.guests}: ${data.get('guests')}`,
+        `${text.name}: ${String(data.get('name')).trim()}`,
+        `${text.phone}: ${String(data.get('phone')).trim()}`,
+      ];
+      const email = String(data.get('email') || '').trim();
+      if (email) lines.push(`${text.email}: ${email}`);
+      const message = String(data.get('message') || '').trim();
+      if (message) lines.push(`${text.message}: ${message}`);
+      window.open(`https://wa.me/${wa}?text=${encodeURIComponent(lines.join('\n'))}`, '_blank', 'noopener');
+    });
+  }
+
+  // ----- Click-to-load map (Google is only contacted on request) -----
+  const loadBtn = document.querySelector<HTMLButtonElement>('[data-map-load]');
+  loadBtn?.addEventListener('click', () => {
+    const holder = document.querySelector<HTMLElement>('[data-map-placeholder]');
+    if (!holder) return;
+    const iframe = document.createElement('iframe');
+    iframe.src = loadBtn.dataset.src || '';
+    iframe.title = loadBtn.dataset.title || 'Map';
+    iframe.loading = 'lazy';
+    iframe.referrerPolicy = 'no-referrer-when-downgrade';
+    holder.replaceWith(iframe);
+  });
+</script>

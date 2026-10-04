@@ -1,0 +1,80 @@
+---
+/**
+ * The oval 1907 seal: a cartouche the way a grocer stamped his tin.
+ * Words are set on the oval in Cinzel; the year sits in the middle.
+ */
+interface Props {
+  class?: string;
+  /** Text on the upper arc. */
+  top?: string;
+  /** Text on the lower arc. */
+  bottom?: string;
+}
+
+const { class: className, top = 'ALLI FASI · KALATHOS', bottom = 'RODOS' } = Astro.props;
+const uid = Math.random().toString(36).slice(2, 8);
+---
+
+<svg class:list={['seal', className]} viewBox="0 0 220 150" role="img" aria-label="Alli Fasi — since 1907">
+  <defs>
+    <path id={`seal-top-${uid}`} d="M 34 80 A 76 52 0 0 1 186 80"></path>
+    <path id={`seal-bottom-${uid}`} d="M 40 76 A 70 50 0 0 0 180 76"></path>
+  </defs>
+  <ellipse cx="110" cy="75" rx="106" ry="71" class="seal__ground"></ellipse>
+  <ellipse cx="110" cy="75" rx="101" ry="66" class="seal__ring"></ellipse>
+  <ellipse cx="110" cy="75" rx="62" ry="36" class="seal__ring seal__ring--thin"></ellipse>
+  <text class="seal__arc">
+    <textPath href={`#seal-top-${uid}`} startOffset="50%" text-anchor="middle">{top}</textPath>
+  </text>
+  <text class="seal__arc">
+    <textPath href={`#seal-bottom-${uid}`} startOffset="50%" text-anchor="middle" dominant-baseline="hanging">{bottom}</textPath>
+  </text>
+  <text x="110" y="87" text-anchor="middle" class="seal__year">1907</text>
+  <path d="M28 75h8M184 75h8" class="seal__tick"></path>
+</svg>
+
+<style>
+  .seal {
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .seal__ground {
+    fill: var(--cream);
+    stroke: var(--gold);
+    stroke-width: 1.5;
+  }
+
+  .seal__ring {
+    fill: none;
+    stroke: var(--gold);
+    stroke-width: 1.5;
+  }
+
+  .seal__ring--thin {
+    stroke-width: 0.8;
+  }
+
+  .seal__tick {
+    stroke: var(--gold);
+    stroke-width: 1.5;
+  }
+
+  .seal__arc {
+    font-family: var(--font-cinzel);
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    fill: var(--teal);
+  }
+
+  .seal__year {
+    font-family: var(--font-cinzel);
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    fill: var(--teal);
+  }
+</style>

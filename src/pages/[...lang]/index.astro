@@ -1,0 +1,666 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Frame from '../../components/Frame.astro';
+import Seal from '../../components/Seal.astro';
+import Meander from '../../components/Meander.astro';
+import Icon from '../../components/Icon.astro';
+import DishLabel from '../../components/DishLabel.astro';
+import ReserveBand from '../../components/ReserveBand.astro';
+import { href, langPaths, t, type Lang } from '../../i18n/config';
+import { DIRECTIONS_URL, GOOGLE_REVIEWS_URL, TRIPADVISOR_URL } from '../../data/site';
+import terraceMoon from '../../assets/photos/terrace-moon.avif';
+import mezeTable from '../../assets/photos/meze-table.avif';
+import courtyardEvening from '../../assets/photos/courtyard-evening.avif';
+import grilledBread from '../../assets/photos/grilled-bread.avif';
+import terraceNight from '../../assets/photos/terrace-night.avif';
+
+export const getStaticPaths = langPaths;
+
+const { lang } = Astro.props as { lang: Lang };
+const s = t(lang);
+
+// Signature dishes named in arquitectura_web.md (menu numbers).
+const signature = [42, 39, 54, 43, 56, 17];
+---
+
+<Base lang={lang} page="home" title={s.home.title} fullTitle>
+  <!-- ============ HERO: the tin label ============ -->
+  <section class="hero tin">
+    <Meander class="hero__band" />
+    <div class="container hero__grid">
+      <div class="hero__copy">
+        <h1 class="hero__title">{s.home.h1}</h1>
+        <p class="hero__lockup"><span class="hero__lockup-rule" aria-hidden="true"></span><span>{s.home.lockup}</span><span class="hero__lockup-rule" aria-hidden="true"></span></p>
+        <p class="lead hero__sub">{s.home.subtitle}</p>
+        <div class="btn-row">
+          <a href={href(lang, 'reservations')} class="btn">
+            <Icon name="calendar" />
+            {s.common.reserveTable}
+          </a>
+          <a href={href(lang, 'menu')} class="btn btn--line">{s.common.viewMenu}</a>
+        </div>
+        <p class="hero__location">
+          <Icon name="pin" />
+          {s.common.location}
+        </p>
+      </div>
+
+      <div class="hero__visual">
+        <Frame class="hero__frame" data-hero-frame>
+          <Image
+            src={terraceMoon}
+            alt={s.home.photoAlt.terrace}
+            widths={[480, 720, 893]}
+            sizes="(min-width: 960px) 46vw, 92vw"
+            loading="eager"
+            fetchpriority="high"
+          />
+        </Frame>
+        <div class="hero__seal" data-hero-seal>
+          <Seal />
+        </div>
+      </div>
+    </div>
+    <Meander />
+  </section>
+
+  <!-- ============ The Alli Fasi experience ============ -->
+  <section class="section paper pillars" aria-labelledby="pillars-title">
+    <div class="container">
+      <h2 id="pillars-title" class="visually-hidden">{s.home.pillarsTitle}</h2>
+      <ol class="pillars__list">
+        {
+          s.home.pillars.map((p, i) => (
+            <li class="pillars__item" data-reveal style={`--i:${i}`}>
+              <h3>{p.title}</h3>
+              <p>{p.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ Signature dishes ============ -->
+  <section class="section paper paper--deep dishes" aria-labelledby="dishes-title">
+    <div class="container dishes__grid">
+      <div class="dishes__visual">
+        <Frame class="dishes__frame" data-reveal>
+          <Image src={mezeTable} alt={s.home.photoAlt.table} widths={[480, 720, 893]} sizes="(min-width: 960px) 40vw, 92vw" />
+        </Frame>
+      </div>
+      <div class="dishes__list">
+        <p class="heading-ornament" aria-hidden="true"><i></i></p>
+        <h2 id="dishes-title" data-reveal>{s.home.dishesTitle}</h2>
+        <p class="muted" data-reveal>{s.home.dishesIntro}</p>
+        <div class="dishes__labels">
+          {signature.map((n) => <DishLabel lang={lang} n={n} />)}
+        </div>
+        <a href={href(lang, 'menu')} class="arrow-link dishes__cta">
+          <span>{s.common.exploreMenu}</span>
+          <Icon name="arrow" />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Since 1907 ============ -->
+  <section class="section tin story" aria-labelledby="story-title">
+    <div class="container story__grid">
+      <div class="label-panel story__panel" data-reveal>
+        <h2 id="story-title">{s.home.storyTitle}</h2>
+        <p>{s.home.storyText}</p>
+        <a href={href(lang, 'story')} class="arrow-link">
+          <span>{s.common.discoverStory}</span>
+          <Icon name="arrow" />
+        </a>
+      </div>
+      <Frame class="story__frame" data-reveal style="--i:1">
+        <Image src={courtyardEvening} alt={s.home.photoAlt.evening} widths={[480, 720, 893]} sizes="(min-width: 960px) 48vw, 92vw" />
+      </Frame>
+    </div>
+  </section>
+
+  <!-- ============ Greek meze ============ -->
+  <section class="section paper meze" aria-labelledby="meze-title">
+    <div class="container meze__grid">
+      <Frame class="meze__frame" data-reveal>
+        <Image src={grilledBread} alt={s.home.photoAlt.bread} widths={[480, 720, 856]} sizes="(min-width: 960px) 38vw, 92vw" />
+      </Frame>
+      <div class="meze__copy">
+        <p class="heading-ornament" aria-hidden="true"><i></i></p>
+        <h2 id="meze-title" data-reveal>{s.home.mezeTitle}</h2>
+        {s.home.mezeText.map((p) => <p class="measure" data-reveal>{p}</p>)}
+        <p class="meze__tip" data-reveal>{s.home.mezeTip}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Near Lindos ============ -->
+  <section class="section paper paper--deep lindos" aria-labelledby="lindos-title">
+    <div class="container lindos__grid">
+      <div>
+        <h2 id="lindos-title" data-reveal>{s.home.lindosTitle}</h2>
+        <p class="measure" data-reveal>{s.home.lindosText}</p>
+
+        <!-- The road: Rhodes town → Kalathos (Alli Fasi) → Lindos -->
+        <div class="road" data-reveal>
+          <div class="road__line" aria-hidden="true"></div>
+          <ol class="road__stops">
+            <li class="road__stop">
+              <span class="road__dot" aria-hidden="true"></span>
+              <span class="road__name">Rhodes</span>
+            </li>
+            <li class="road__stop road__stop--here">
+              <span class="road__dot" aria-hidden="true"></span>
+              <span class="road__name">Kalathos</span>
+              <span class="road__us">Alli Fasi</span>
+            </li>
+            <li class="road__stop">
+              <span class="road__dot" aria-hidden="true"></span>
+              <span class="road__name">Lindos</span>
+              <span class="road__time">10 min</span>
+            </li>
+          </ol>
+        </div>
+
+        <a href={DIRECTIONS_URL} class="btn" target="_blank" rel="noopener noreferrer" data-reveal>
+          <Icon name="route" />
+          {s.common.getDirections}
+          <span class="visually-hidden">{s.common.opensNewTab}</span>
+        </a>
+      </div>
+      <Frame class="lindos__frame" data-reveal style="--i:1">
+        <Image src={terraceNight} alt={s.home.photoAlt.night} widths={[480, 720, 893]} sizes="(min-width: 960px) 44vw, 92vw" />
+      </Frame>
+    </div>
+  </section>
+
+  <!-- ============ Reviews (links out, no invented quotes) ============ -->
+  <section class="section--tight paper reviews-strip" aria-labelledby="reviews-title">
+    <div class="container reviews-strip__inner">
+      <div>
+        <h2 id="reviews-title" data-reveal>{s.home.reviewsTitle}</h2>
+        <p class="muted measure" data-reveal>{s.home.reviewsText}</p>
+      </div>
+      <div class="btn-row" data-reveal>
+        <a href={GOOGLE_REVIEWS_URL} class="btn btn--line" target="_blank" rel="noopener noreferrer">
+          Google <Icon name="external" /><span class="visually-hidden">{s.common.opensNewTab}</span>
+        </a>
+        <a href={TRIPADVISOR_URL} class="btn btn--line" target="_blank" rel="noopener noreferrer">
+          Tripadvisor <Icon name="external" /><span class="visually-hidden">{s.common.opensNewTab}</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <ReserveBand lang={lang} />
+</Base>
+
+<style>
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero__grid {
+    display: grid;
+    gap: clamp(2.5rem, 2rem + 3vw, 4rem);
+    align-items: center;
+    padding-block: clamp(2.5rem, 1.5rem + 5vw, 6rem) clamp(3.5rem, 2rem + 5vw, 6rem);
+  }
+
+  .hero__title {
+    max-width: 16ch;
+    margin-bottom: 0.45em;
+  }
+
+  .hero__lockup {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    max-width: 34rem;
+    margin: 0 0 1.5rem;
+    font-family: var(--font-heading);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 599px) {
+    .hero__lockup {
+      font-size: 0.8125rem;
+      letter-spacing: 0.14em;
+      white-space: normal;
+    }
+
+    .hero__lockup-rule:last-child {
+      display: none;
+    }
+  }
+
+  .hero__lockup-rule {
+    flex: 1;
+    min-width: 24px;
+    height: 5px;
+    border-block: 1px solid var(--gold);
+  }
+
+  .hero__lockup-rule:first-child {
+    flex: 0 0 40px;
+  }
+
+  :global(:lang(el)) .hero__title {
+    font-size: clamp(1.875rem, 1.3rem + 2.2vw, 3.125rem);
+  }
+
+  .hero__sub {
+    max-width: 40ch;
+    margin-bottom: 2rem;
+    color: var(--on-tin-muted);
+  }
+
+  .hero__location {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 1.75rem 0 0;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--beige);
+  }
+
+  .hero__location :global(.icon) {
+    width: 20px;
+    height: 20px;
+    color: var(--gold);
+  }
+
+  .hero__visual {
+    position: relative;
+    padding: 0 0 28px 28px;
+  }
+
+  .hero__frame {
+    aspect-ratio: 4 / 3;
+  }
+
+  .hero__seal {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    z-index: 3;
+    width: clamp(132px, 28vw, 196px);
+    filter: drop-shadow(0 10px 18px rgb(5 25 29 / 0.45));
+  }
+
+  @media (min-width: 960px) {
+    .hero__grid {
+      grid-template-columns: 1.05fr 1fr;
+    }
+
+    .hero__visual {
+      padding: 0 0 36px 40px;
+    }
+  }
+
+  /* Signature interaction: the label is printed. Outer gold rule first,
+     then the inner rule, then the picture, then the seal is stamped once.
+     Static under reduced motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero :global([data-hero-frame]) {
+      animation: ink-gold 700ms var(--ease-out) both;
+    }
+
+    .hero :global([data-hero-frame] .frame__rule) {
+      animation: ink-gold 700ms 300ms var(--ease-out) both;
+    }
+
+    .hero :global([data-hero-frame] img) {
+      animation: photo-in 1100ms 450ms var(--ease-out) both;
+    }
+
+    .hero [data-hero-seal] {
+      animation: seal-stamp 700ms 1150ms var(--ease-out) both;
+    }
+
+    .hero__copy > * {
+      animation: copy-in 900ms var(--ease-out) both;
+    }
+
+    .hero__copy > :nth-child(2) {
+      animation-delay: 100ms;
+    }
+    .hero__copy > :nth-child(3) {
+      animation-delay: 180ms;
+    }
+    .hero__copy > :nth-child(4) {
+      animation-delay: 260ms;
+    }
+    .hero__copy > :nth-child(5) {
+      animation-delay: 340ms;
+    }
+  }
+
+  @keyframes ink-gold {
+    from {
+      background-color: var(--teal);
+    }
+  }
+
+  @keyframes photo-in {
+    from {
+      opacity: 0;
+      transform: scale(1.04);
+    }
+  }
+
+  @keyframes seal-stamp {
+    from {
+      opacity: 0;
+      transform: scale(1.35) rotate(-8deg);
+    }
+  }
+
+  @keyframes copy-in {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+
+  /* ---------- Pillars: one compact label strip ---------- */
+  .pillars {
+    padding-block: clamp(1.75rem, 1.2rem + 2.5vw, 3.5rem);
+  }
+
+  .pillars__list {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pillars__item {
+    display: grid;
+    grid-template-columns: 9.5rem 1fr;
+    gap: 12px;
+    align-items: baseline;
+    padding: 12px 0;
+    border-top: 1px solid color-mix(in srgb, var(--gold) 55%, transparent);
+  }
+
+  .pillars__item:last-child {
+    border-bottom: 1px solid color-mix(in srgb, var(--gold) 55%, transparent);
+  }
+
+  .pillars__item h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--teal);
+  }
+
+  .pillars__item h3::before {
+    content: '';
+    flex: none;
+    width: 7px;
+    height: 7px;
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+
+  .pillars__item p {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  @media (min-width: 900px) {
+    .pillars__list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .pillars__item,
+    .pillars__item:last-child {
+      grid-template-columns: 1fr;
+      gap: 6px;
+      padding: 4px 32px;
+      border: 0;
+      border-left: 1px solid color-mix(in srgb, var(--gold) 55%, transparent);
+    }
+
+    .pillars__item:first-child {
+      border-left: 0;
+      padding-left: 0;
+    }
+  }
+
+  /* ---------- Signature dishes ---------- */
+  .dishes__grid {
+    display: grid;
+    gap: 48px;
+  }
+
+  .dishes__frame {
+    aspect-ratio: 4 / 5;
+  }
+
+  @media (min-width: 960px) {
+    .dishes__visual :global(.dishes__frame) {
+      aspect-ratio: auto;
+      height: calc(100vh - var(--header-h) - 64px);
+      max-height: 760px;
+    }
+  }
+
+  .dishes__labels {
+    margin-top: 12px;
+    border-top: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  }
+
+  .dishes__cta {
+    margin-top: 24px;
+  }
+
+  @media (min-width: 960px) {
+    .dishes__grid {
+      grid-template-columns: 5fr 7fr;
+      gap: 72px;
+      align-items: start;
+    }
+
+    .dishes__visual {
+      position: sticky;
+      top: calc(var(--header-h) + 32px);
+    }
+  }
+
+  /* ---------- Since 1907 ---------- */
+  .story__grid {
+    display: grid;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .story__panel h2 {
+    color: var(--teal);
+  }
+
+  .story__panel p {
+    max-width: 50ch;
+  }
+
+  .story__frame {
+    aspect-ratio: 4 / 3;
+  }
+
+  @media (min-width: 960px) {
+    .story__grid {
+      grid-template-columns: 1fr 1.1fr;
+      gap: 64px;
+    }
+
+    .story__panel {
+      margin-right: -96px;
+      z-index: 1;
+      padding: 3rem 7rem 3rem 3rem;
+    }
+  }
+
+  /* ---------- Meze ---------- */
+  .meze__grid {
+    display: grid;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .meze__frame {
+    aspect-ratio: 1;
+    max-width: 460px;
+  }
+
+  .meze__tip {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 10px 16px;
+    border: var(--rule);
+    font-weight: 600;
+    color: var(--gold-ink);
+  }
+
+  @media (min-width: 960px) {
+    .meze__grid {
+      grid-template-columns: 5fr 7fr;
+      gap: 80px;
+    }
+  }
+
+  /* ---------- Near Lindos ---------- */
+  .lindos__grid {
+    display: grid;
+    gap: 48px;
+    align-items: center;
+  }
+
+  .lindos h2 {
+    max-width: 20ch;
+  }
+
+  .lindos__frame {
+    aspect-ratio: 4 / 3;
+  }
+
+  @media (min-width: 960px) {
+    .lindos__grid {
+      grid-template-columns: 1.1fr 1fr;
+      gap: 72px;
+    }
+  }
+
+  .road {
+    position: relative;
+    margin: 2rem 0 2.25rem;
+    padding-top: 12px;
+  }
+
+  .road__line {
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    top: 18px;
+    border-top: 2px dashed color-mix(in srgb, var(--teal) 45%, transparent);
+  }
+
+  .road__stops {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .road__stop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+  }
+
+  .road__stop:first-child {
+    align-items: flex-start;
+  }
+
+  .road__stop:last-child {
+    align-items: flex-end;
+  }
+
+  .road__dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--cream-deep);
+    border: 2px solid var(--teal);
+  }
+
+  .road__stop--here .road__dot {
+    width: 22px;
+    height: 22px;
+    margin-top: -4px;
+    background: var(--gold);
+    border-color: var(--teal);
+    box-shadow: 0 0 0 4px var(--cream-deep), 0 0 0 5px var(--gold);
+  }
+
+  .road__name {
+    font-family: var(--font-cinzel);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
+
+  .road__us,
+  .road__time {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--gold-ink);
+  }
+
+  /* ---------- Reviews strip ---------- */
+  .reviews-strip {
+    border-top: 1px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  }
+
+  .reviews-strip__inner {
+    display: grid;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .reviews-strip h2 {
+    font-size: var(--step-2);
+    margin-bottom: 0.35em;
+  }
+
+  .reviews-strip p {
+    margin: 0;
+  }
+
+  @media (min-width: 900px) {
+    .reviews-strip__inner {
+      grid-template-columns: 1fr auto;
+    }
+  }
+</style>

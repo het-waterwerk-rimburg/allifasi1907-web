@@ -1,0 +1,534 @@
+---
+import { Image } from 'astro:assets';
+import mark from '../assets/brand/logo-mark.png';
+import Icon from './Icon.astro';
+import { LANGS, LANG_META, href, t, type Lang, type PageKey } from '../i18n/config';
+import { MENU } from '../data/menu';
+import { SITE } from '../data/site';
+
+interface Props {
+  lang: Lang;
+  page: PageKey;
+}
+
+const { lang, page } = Astro.props;
+const s = t(lang);
+
+const nav: { key: PageKey; label: string }[] = [
+  { key: 'menu', label: s.nav.menu },
+  { key: 'story', label: s.nav.story },
+  { key: 'restaurant', label: s.nav.restaurant },
+  { key: 'cuisine', label: s.nav.cuisine },
+  { key: 'reviews', label: s.nav.reviews },
+  { key: 'reservations', label: s.nav.contact },
+];
+---
+
+<header class="site-header tin" data-header>
+  <div class="site-header__bar container">
+    <button
+      type="button"
+      class="site-header__burger"
+      aria-label={s.nav.openMenu}
+      aria-controls="site-drawer"
+      aria-expanded="false"
+      data-drawer-open
+    >
+      <Icon name="menu" />
+    </button>
+
+    <a href={href(lang, 'home')} class="brand" aria-label={s.nav.home}>
+      <Image src={mark} alt="" class="brand__mark" width={44} height={43} loading="eager" />
+      <span class="brand__word" aria-hidden="true">
+        <span class="brand__name">Alli Fasi</span>
+        <span class="brand__since">Rodos · 1907</span>
+      </span>
+    </a>
+
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        {
+          nav.map((item) => (
+            <li>
+              <a href={href(lang, item.key)} aria-current={page === item.key ? 'page' : undefined}>
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="site-header__actions">
+      <details class="lang" data-lang-menu>
+        <summary aria-label={`${s.nav.language}: ${LANG_META[lang].label}`}>
+          <Icon name="globe" />
+          <span>{LANG_META[lang].short}</span>
+          <Icon name="chevron" class="lang__chevron" />
+        </summary>
+        <ul class="lang__list">
+          {
+            LANGS.map((l) => (
+              <li>
+                <a
+                  href={href(l, page)}
+                  hreflang={LANG_META[l].htmlLang}
+                  lang={LANG_META[l].htmlLang}
+                  aria-current={l === lang ? 'true' : undefined}
+                >
+                  <span class="lang__short">{LANG_META[l].short}</span>
+                  {LANG_META[l].label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </details>
+      <a href={href(lang, 'reservations')} class="btn site-header__reserve">{s.nav.reserve}</a>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile off-canvas navigation (native dialog: focus trap + Esc) -->
+<dialog id="site-drawer" class="drawer tin" aria-label="Main" data-drawer>
+  <div class="drawer__head">
+    <span class="drawer__title">Alli Fasi</span>
+    <button type="button" class="drawer__close" aria-label={s.nav.closeMenu} data-drawer-close>
+      <Icon name="close" />
+    </button>
+  </div>
+
+  <nav class="drawer__nav" aria-label="Main">
+    <ul>
+      {
+        nav.map((item) => (
+          <li>
+            <a href={href(lang, item.key)} aria-current={page === item.key ? 'page' : undefined}>
+              {item.label}
+            </a>
+            {item.key === 'menu' && (
+              <ul class="drawer__sub" aria-label={s.nav.menuCategories}>
+                {MENU.map((c) => (
+                  <li>
+                    <a href={href(lang, 'menu', c.id)}>{c.title[lang]}</a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+
+  {
+    SITE.pdfMenu && (
+      <a href={SITE.pdfMenu} class="btn btn--line drawer__pdf" download>
+        <Icon name="download" />
+        {s.nav.downloadPdf}
+      </a>
+    )
+  }
+
+  <a href={href(lang, 'reservations')} class="btn drawer__reserve">{s.common.reserveTable}</a>
+
+  <ul class="drawer__langs" aria-label={s.nav.language}>
+    {
+      LANGS.map((l) => (
+        <li>
+          <a
+            href={href(l, page)}
+            hreflang={LANG_META[l].htmlLang}
+            lang={LANG_META[l].htmlLang}
+            aria-current={l === lang ? 'true' : undefined}
+            aria-label={LANG_META[l].label}
+          >
+            {LANG_META[l].short}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</dialog>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid var(--teal-line);
+  }
+
+  .site-header__bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: var(--header-h);
+  }
+
+  /* Brand lockup: the logo's meander-and-olive mark + the name in Cinzel */
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--cream);
+    margin-inline: auto;
+  }
+
+  .brand__mark {
+    width: 40px;
+    height: auto;
+  }
+
+  .brand__word {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+
+  .brand__name {
+    font-family: var(--font-cinzel);
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+
+  .brand__since {
+    margin-top: 4px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .site-header__burger,
+  .drawer__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-left: -12px;
+    border: 0;
+    background: none;
+    color: var(--cream);
+  }
+
+  .site-nav,
+  .lang {
+    display: none;
+  }
+
+  .site-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .site-header__reserve {
+    min-height: 44px;
+    padding: 0.55rem 1rem;
+    font-size: 0.8125rem;
+  }
+
+  @media (min-width: 1120px) {
+    .site-header__burger {
+      display: none;
+    }
+
+    .brand {
+      margin-inline: 0 auto;
+    }
+
+    .site-nav {
+      display: block;
+    }
+
+    .site-nav ul {
+      display: flex;
+      gap: 4px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .site-nav a {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0 12px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--on-tin-muted);
+    }
+
+    .site-nav a::after {
+      content: '';
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 8px;
+      height: 1px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--dur) var(--ease-out);
+    }
+
+    .site-nav a:hover,
+    .site-nav a[aria-current='page'] {
+      color: var(--cream);
+    }
+
+    .site-nav a:hover::after,
+    .site-nav a[aria-current='page']::after {
+      transform: scaleX(1);
+    }
+
+    .lang {
+      display: block;
+      position: relative;
+      margin-left: 8px;
+    }
+
+    .site-header__reserve {
+      padding: 0.6rem 1.25rem;
+    }
+  }
+
+  /* Language switch */
+  .lang summary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    padding: 0 8px;
+    list-style: none;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: var(--on-tin-muted);
+    cursor: pointer;
+  }
+
+  .lang summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .lang summary :global(.icon) {
+    width: 18px;
+    height: 18px;
+  }
+
+  .lang summary:hover {
+    color: var(--cream);
+  }
+
+  .lang :global(.lang__chevron) {
+    width: 14px;
+    height: 14px;
+    transition: transform var(--dur) var(--ease-out);
+  }
+
+  .lang[open] :global(.lang__chevron) {
+    transform: rotate(180deg);
+  }
+
+  .lang__list {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    min-width: 190px;
+    margin: 0;
+    padding: 8px;
+    list-style: none;
+    background: var(--cream);
+    color: var(--charcoal);
+    border: var(--rule);
+    box-shadow: 0 12px 30px -12px rgb(10 44 50 / 0.45);
+  }
+
+  .lang__list a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    padding: 0 12px;
+    text-decoration: none;
+  }
+
+  .lang__list a:hover {
+    background: var(--cream-deep);
+  }
+
+  .lang__list a[aria-current='true'] {
+    font-weight: 600;
+    color: var(--teal);
+  }
+
+  .lang__short {
+    width: 2ch;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--gold-ink);
+  }
+
+  /* Drawer */
+  .drawer {
+    width: min(100vw, 420px);
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0 auto 0 0;
+    padding: 0 var(--gutter) 32px;
+    border: 0;
+    border-right: var(--rule);
+    overflow-y: auto;
+  }
+
+  .drawer::backdrop {
+    background: rgb(10 44 50 / 0.6);
+  }
+
+  .drawer[open] {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .drawer[open] {
+      animation: drawer-in 380ms var(--ease-out);
+    }
+  }
+
+  @keyframes drawer-in {
+    from {
+      transform: translateX(-24px);
+      opacity: 0;
+    }
+  }
+
+  .drawer__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-h);
+    border-bottom: 1px solid var(--teal-line);
+  }
+
+  .drawer__close {
+    margin: 0 -12px 0 0;
+  }
+
+  .drawer__title {
+    font-family: var(--font-cinzel);
+    font-size: 1.25rem;
+    letter-spacing: 0.08em;
+  }
+
+  .drawer__nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .drawer__nav > ul > li > a {
+    display: flex;
+    align-items: center;
+    min-height: 52px;
+    font-family: var(--font-heading);
+    font-size: 1.375rem;
+    text-decoration: none;
+    border-bottom: 1px solid var(--teal-line);
+  }
+
+  .drawer__nav a[aria-current='page'] {
+    color: var(--gold);
+  }
+
+  .drawer__sub {
+    padding: 4px 0 12px 16px !important;
+    border-left: 1px solid var(--gold);
+    margin: 12px 0 4px !important;
+  }
+
+  .drawer__sub a {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    font-size: 0.9375rem;
+    color: var(--on-tin-muted);
+    text-decoration: none;
+  }
+
+  .drawer__sub a:hover {
+    color: var(--cream);
+  }
+
+  .drawer__langs {
+    display: flex;
+    gap: 8px;
+    margin: auto 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .drawer__langs a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 48px;
+    min-height: 44px;
+    border: 1px solid var(--teal-line);
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .drawer__langs a[aria-current='true'] {
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+</style>
+
+<script>
+  const drawer = document.querySelector<HTMLDialogElement>('[data-drawer]');
+  const openBtn = document.querySelector<HTMLButtonElement>('[data-drawer-open]');
+  const closeBtn = document.querySelector<HTMLButtonElement>('[data-drawer-close]');
+
+  if (drawer && openBtn) {
+    openBtn.addEventListener('click', () => {
+      drawer.showModal();
+      openBtn.setAttribute('aria-expanded', 'true');
+    });
+    closeBtn?.addEventListener('click', () => drawer.close());
+    drawer.addEventListener('close', () => openBtn.setAttribute('aria-expanded', 'false'));
+    // Click on the backdrop closes the drawer.
+    drawer.addEventListener('click', (event) => {
+      if (event.target === drawer) drawer.close();
+    });
+    // Following an in-page link (menu categories) closes the drawer.
+    drawer.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => drawer.close()));
+  }
+
+  // Close the language menu on outside click / Esc.
+  const langMenu = document.querySelector<HTMLDetailsElement>('[data-lang-menu]');
+  if (langMenu) {
+    document.addEventListener('click', (event) => {
+      if (langMenu.open && !langMenu.contains(event.target as Node)) langMenu.open = false;
+    });
+    langMenu.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        langMenu.open = false;
+        langMenu.querySelector('summary')?.focus();
+      }
+    });
+  }
+</script>
