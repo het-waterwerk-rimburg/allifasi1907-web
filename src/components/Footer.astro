@@ -14,6 +14,14 @@ const { lang } = Astro.props;
 const s = t(lang);
 const year = new Date().getFullYear();
 
+/** Credit line for the web agency; the name links to its website. */
+const MADE_BY: Record<Lang, string> = {
+  en: 'Website by',
+  el: 'Ιστοσελίδα από τη',
+  de: 'Website von',
+  fr: 'Site réalisé par',
+};
+
 const nav: { key: PageKey; label: string }[] = [
   { key: 'menu', label: s.nav.menu },
   { key: 'story', label: s.nav.story },
@@ -102,6 +110,12 @@ const nav: { key: PageKey; label: string }[] = [
 
   <div class="container site-footer__legal">
     <p>&copy; {year} Alli Fasi 1907. {s.footer.rights}</p>
+    <p>
+      {MADE_BY[lang]}{' '}
+      <a href="https://www.waterwerk-websolutions.nl" target="_blank" rel="noopener"
+        >Waterwerk Websolutions<span class="visually-hidden">{s.common.opensNewTab}</span></a
+      >
+    </p>
     <ul>
       <li><a href={href(lang, 'privacy')}>{s.footer.privacy}</a></li>
       <li><a href={href(lang, 'cookies')}>{s.footer.cookies}</a></li>
